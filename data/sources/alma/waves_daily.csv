@@ -1,0 +1,30 @@
+date,day_num,alma_waves_daily,alma_waves_cumul,data_quality,source_report_id,notes
+2026-02-28,1,44,44,direct,ALMA_MAR13_14_INFOGRAPHIC,"Confirmed: 44 waves. Bar chart from Mar13-14 infographic. Previous value of 25 was incorrect."
+2026-03-01,2,55,99,direct,ALMA_MAR13_14_INFOGRAPHIC,"Confirmed: 55 waves (peak day). Previous value of 62 was incorrect."
+2026-03-02,3,16,115,direct,ALMA_MAR13_14_INFOGRAPHIC,"Confirmed: 16 waves. Previous value of 2 was incorrect."
+2026-03-03,4,10,125,direct,ALMA_MAR13_14_INFOGRAPHIC,Confirmed: 10 waves. Previous value of 24 was incorrect.
+2026-03-04,5,10,135,direct,ALMA_MAR13_14_INFOGRAPHIC,Confirmed: 10 waves. Previous value of 7 was incorrect.
+2026-03-05,6,11,146,direct,ALMA_MAR13_14_INFOGRAPHIC,Confirmed: 11 waves. Previous value of 9 was incorrect.
+2026-03-06,7,7,153,direct,ALMA_MAR13_14_INFOGRAPHIC,Confirmed: 7 waves (unchanged).
+2026-03-07,8,12,165,direct,ALMA_MAR13_14_INFOGRAPHIC,"Confirmed: 12 waves. cumul=165 matches stated Alma anchor. Previous value of 7 was incorrect."
+2026-03-08,9,9,174,direct,ALMA_MAR13_14_INFOGRAPHIC,Confirmed: 9 waves (unchanged).
+2026-03-09,10,13,187,direct,ALMA_MAR13_14_INFOGRAPHIC,"Confirmed: 13 waves. cumul=187 (old stated anchor=186 — 1-wave discrepancy; infographic trusted as it sums to 235 at Mar14)."
+2026-03-10,11,9,196,direct,ALMA_MAR13_14_INFOGRAPHIC,cumul=196. Consistent with confirmed series.
+2026-03-11,12,11,207,direct,ALMA_MAR13_14_INFOGRAPHIC,cumul=207. Consistent: 187+9+11=207.
+2026-03-12,13,10,217,direct,ALMA_MAR13_14_INFOGRAPHIC,"Confirmed: 10 waves. cumul=217."
+2026-03-13,14,11,228,direct,ALMA_MAR13_14_INFOGRAPHIC,Confirmed: 11 waves. cumul=228.
+2026-03-14,15,7,235,direct,ALMA_MAR13_14_INFOGRAPHIC,"Confirmed: 7 waves. ANCHOR: cumul=235 explicitly stated ('Total Attack Waves Since War Began: 235')."
+2026-03-15,16,10,245,direct,ALMA_MAR16_1800,cumul=245 (235+10=245).
+2026-03-16,17,12,257,direct,ALMA_MAR17_1600,cumul=257 (245+12=257).
+2026-03-17,18,11,268,direct,ALMA_MAR18_1800,cumul=268 (257+11=268).
+2026-03-18,19,13,281,direct,ALMA,cumul=281 (268+13=281).
+2026-03-19,20,19,300,direct,ALMA_MAR20_1600,"Spike day. cumul=300 (281+19=300). Geographic: TLV=31.6%; North=31.6%; Jerusalem=26.3%; South=10.5%."
+2026-03-20,21,13,,statista,STATISTA,"Statista value=13. NOTE: Statista Mar20+21 sum=21 vs Alma combined=29 — Statista undercounts in this period. Use cumul anchor at Mar21 (329), not daily sum."
+2026-03-21,22,8,329,direct,ALMA_MAR22_1800,"Daily=8 (Statista). cumul=329 CONFIRMED via Alma Mar22 18:00 ('329 total Iranian attack waves' including '29 waves over weekend Mar20-21'). ANCHOR CONFLICT: 329+8+7+9=353 ≠ 346 (Mar24 stated). 7-wave discrepancy confirmed real. Use stated anchors only — do not chain intermediate cumuls."
+2026-03-22,23,8,,direct,ALMA_MAR23_1800,"Daily=8 confirmed. Intermediate cumul inconsistent (forward=337; backward=338). Do not use."
+2026-03-23,24,7,,direct,ALMA_MAR24_1600,"Daily=7 confirmed. Intermediate cumul inconsistent (forward=344; backward=337). Do not use."
+2026-03-24,25,9,346,direct,ALMA_MAR25_1800,"cumul=346 CONFIRMED. Mar24=9 explicitly stated. This is end-of-Mar24 anchor."
+2026-03-25,26,20,366,derived,ALMA_MAR26_1800,"Daily=20 DERIVED: 377-346-11=20. Statista reported 9 — severe undercount. Spike comparable to Mar19 (19 waves)."
+2026-03-26,27,11,377,direct,ALMA_MAR26,"cumul=377 CONFIRMED. Mar26=11 confirmed."
+2026-03-27,28,,,gap,,"No Alma data. URL not yet confirmed."
+2026-03-28,29,,,gap,,"No Alma data. URL not yet confirmed."

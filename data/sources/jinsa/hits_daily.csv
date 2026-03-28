@@ -1,0 +1,30 @@
+date,day_num,hits_israel,hits_israel_notes,source_pdf
+2026-02-28,1,4,Multiple impact sites; all-projectile types,JINSA_MAR24_PDF
+2026-03-01,2,3,Multiple hits; all-projectile types,JINSA_MAR24_PDF
+2026-03-02,3,1,All-projectile types,JINSA_MAR24_PDF
+2026-03-03,4,2,All-projectile types,JINSA_MAR24_PDF
+2026-03-04,5,2,All-projectile types,JINSA_MAR24_PDF
+2026-03-05,6,1,All-projectile types,JINSA_MAR24_PDF
+2026-03-06,7,1,All-projectile types,JINSA_MAR24_PDF
+2026-03-07,8,1,All-projectile types,JINSA_MAR24_PDF
+2026-03-08,9,2,All-projectile types; ~50% cluster warheads from this date,JINSA_MAR24_PDF
+2026-03-09,10,1,All-projectile types,JINSA_MAR24_PDF
+2026-03-10,11,1,All-projectile types,JINSA_MAR24_PDF
+2026-03-11,12,5,"~5-6 hits; likely drone-dominated period — Chart 4 includes all projectile types, not BM-only",JINSA_MAR24_PDF
+2026-03-12,13,4,Drone-dominated. All-projectile types,JINSA_MAR24_PDF
+2026-03-13,14,4,Drone-dominated. All-projectile types,JINSA_MAR24_PDF
+2026-03-14,15,2,All-projectile types,JINSA_MAR24_PDF
+2026-03-15,16,8,"~8 hits; likely drone-dominated — Chart 4 all-projectile types",JINSA_MAR24_PDF
+2026-03-16,17,1,All-projectile types,JINSA_MAR24_PDF
+2026-03-17,18,2,1-2 hits; all-projectile types,JINSA_MAR24_PDF
+2026-03-18,19,6,6 confirmed hits; all-projectile types,JINSA_MAR24_PDF
+2026-03-19,20,8,8 confirmed hits; spike day,JINSA_MAR24_PDF
+2026-03-20,21,3,3 missiles hit targets (IDF/JINSA text),JINSA_MAR24_PDF
+2026-03-21,22,2,"Events: Arad cluster hit + Dimona area impact (2 distinct target events)",JINSA_MAR24_PDF
+2026-03-22,23,3,Chart 4 confirmed,JINSA_MAR24_PDF
+2026-03-23,24,3,Chart 4 confirmed; events include West Bank/Hebron,JINSA_MAR24_PDF
+2026-03-24,25,6,"Chart 4: 6 all-projectile hits. Events: Bnei Brak cluster (9 injured); Eshtaol/Route 1 (19 injured); TLV; Haifa cluster",JINSA_MAR24_PDF
+2026-03-25,26,3,Confirmed from JINSA Mar26 report,JINSA_MAR26_PDF
+2026-03-26,27,2,No catastrophic hits confirmed,JINSA_MAR27_PDF
+2026-03-27,28,2,"Confirmed: Haifa cluster munitions + Tel Aviv fatal hit (1 killed)",JINSA_MAR27_PDF;TIMES_IL;YNET
+2026-03-28,29,1,"Jerusalem-area town hit; several lightly hurt (ToI Mar28 liveblog)",IDF_LIVE;TIMES_IL

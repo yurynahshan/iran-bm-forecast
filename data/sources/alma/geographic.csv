@@ -1,0 +1,8 @@
+date,period_type,tlv_pct,north_pct,south_pct,jerusalem_pct,tlv_cumul,north_cumul,south_cumul,jerusalem_cumul,total_waves,source_report_id,notes
+2026-03-14,cumulative,38.3,23.8,22.6,15.3,90,56,53,36,235,ALMA_MAR13_14_INFOGRAPHIC,"Cumulative through Mar14. TLV=90 (38.3%); North=56 (23.8%); South=53 (22.6%); Jerusalem=36 (15.3%)."
+2026-03-13,weekend_daily,38.9,38.9,27.8,11.1,,,,,18,ALMA_MAR13_14_INFOGRAPHIC,"Weekend Mar13-14 combined=18 waves. North=7 (38.9%); TLV=4 (22.2%); South=5 (27.8%); Jerusalem=2 (11.1%). NOTE: pct cols show North/TLV values for both; see notes for exact counts."
+2026-03-19,daily,31.6,31.6,10.5,26.3,,,,,,19,ALMA_MAR20_1600,"Mar19 daily spike. TLV=31.6%; North=31.6%; Jerusalem=26.3%; South=10.5%."
+2026-03-24,daily,33.3,11.1,55.6,,,,,,,9,ALMA_MAR25_1800,"Mar24 daily. North=11.1%; TLV=33.3%; South=55.6%. 9 waves total."
+2026-03-24,cumulative,38.2,20.7,26.3,14.7,135,73,93,52,346,ALMA_MAR25_1800,"Cumulative through Mar24. TLV=135 (38.2%); North=73 (20.7%); South=93 (26.3%); Jerusalem=52 (14.7%)."
+2026-03-26,daily,60.0,6.7,,,,,,,, 11,ALMA_MAR26,"Mar26 daily. TLV=60%; North=6.7%; ~5 waves targeted Jerusalem+TLV combined."
+2026-03-26,cumulative,38.9,20.0,26.1,15.0,148,76,99,57,377,ALMA_MAR26,"Cumulative through Mar26. TLV=148 (38.9%); South=99 (26.1%); North=76 (20%); Jerusalem=57 (15%)."

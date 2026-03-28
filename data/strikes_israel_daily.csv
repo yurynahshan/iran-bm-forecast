@@ -1,30 +1,30 @@
-date,day_num,phase,bm_il_min,bm_il_max,bm_il_est,bm_il_hits,bm_il_cumul,intercept_pct,cluster_pct,data_type,confidence,sources,notes
-2026-02-28,1,I,50,80,73,4,,,, observed,medium,"JINSA_MAR5_PDF;JINSA;ALMA","JINSA Mar5 PDF table direct: 73 BM against Israel on Day 1. ⚠ ANCHOR CONFLICT: JINSA 5-day sum=187 vs BBC Arabic/IDF anchor=~128 — JINSA Mar5 preliminary counts systematically overcount vs Mar24 final (global Day3: 186→138, Day4: 108→68). Range min=50 (BBC-proportioned: 73×128/187), max=80. bm_il_hits=~4 (Chart 4 all-projectile types). Self-consistency check: Day5/Day1=9/73=12.3% matches JINSA text '88% drop against Israel'."
-2026-03-01,2,I,35,70,57,3,,,, observed,medium,"JINSA_MAR5_PDF;ALMA;JINSA_MAR24_PDF","JINSA Mar5 PDF table direct: 57 BM against Israel on Day 2 (Mar 1). Peak BM day. ⚠ ANCHOR CONFLICT: JINSA 5-day total=187 vs BBC/IDF=~128. Range min=35 (BBC-proportioned), max=70. bm_il_hits=~3 (Chart 4). Note: Alma waves=55 (confirmed from Alma Mar13-14 infographic + Alma Patterns; earlier value of 62 was incorrect)."
-2026-03-02,3,I,15,35,28,1,,,, observed,medium,"JINSA_MAR5_PDF;ALMA;JINSA_MAR24_PDF","JINSA Mar5 PDF table direct: 28 BM against Israel on Day 3 (Mar 2). ⚠ ANCHOR CONFLICT: 5-day total conflict (see Feb 28 note). ⚠ JINSA global total for Mar 2 = 186 (Mar5 PDF) vs 138 (Mar24 Chart 1 final) — Mar5 preliminary overcount confirmed. Apply same caution to Israel-specific value. Range min=15 (BBC-proportioned: 28×128/187), max=35. bm_il_hits=~1 (Chart 4). Alma waves=16 (confirmed from Alma Mar13-14 infographic; earlier value of 2 was incorrect)."
-2026-03-03,4,I,12,28,20,2,,,, observed,medium,"JINSA_MAR5_PDF;ALMA;JINSA_MAR24_PDF","JINSA Mar5 PDF table direct: 20 BM against Israel on Day 4 (Mar 3). ⚠ ANCHOR CONFLICT: JINSA global Mar 3 = 108 (Mar5 PDF) vs 68 (Mar24 final) — 37% overcount in global. Israel-specific likely also overcounted. Range min=12 (BBC-proportioned), max=28. bm_il_hits=~2 (Chart 4)."
-2026-03-04,5,II,5,12,9,2, 128,,,observed,medium,"JINSA_MAR5_PDF;ALMA;BBC_ARABIC;JINSA_MAR24_PDF","JINSA Mar5 PDF table direct: 9 BM against Israel on Day 5 (Mar 4). ⚠ ANCHOR CONFLICT: JINSA 5-day sum (73+57+28+20+9=187) vs bm_il_cumul=~128 (BBC Arabic/IDF 5-day anchor). Resolution: Mar5 preliminary counts revised ~32% downward by Mar24 for global figures — Israel-specific likely similarly overcounted. Cumul=128 retained as IDF-sourced anchor. Phase I→II transition. bm_il_hits=~2 (Chart 4)."
-2026-03-05,6,II,22,40,31,1,,,, proxy_est,low,"ALMA;JINSA_MAR24_PDF","Wave-weighted est: Alma waves=11 of 61 Mar5-10 total (18% × 172 = ~31). Range 22-40. Phase II rapid collapse of launcher force. global_splits derived_max=38 ✓. bm_il_hits=~1 (Chart 4 all-projectile types)."
-2026-03-06,7,II,13,27,20,1,,,, proxy_est,low,"ALMA;JINSA_MAR24_PDF","Wave-weighted est: Alma waves=7 of 61 (11% × 172 = ~20). Range 13-27. global_splits derived_max=46 ✓. bm_il_hits=~1 (Chart 4 all-projectile types)."
-2026-03-07,8,III,26,42,34,1,,,, proxy_est,low,"ALMA;JINSA_MAR24_PDF","Wave-weighted est: Alma waves=12 of 61 (20% × 172 = ~34). Range 26-42. Phase II→III transition (Day 8 = Phase III per CLAUDE.md). global_splits derived_max=57 ✓. bm_il_hits=~1 (Chart 4 all-projectile types)."
-2026-03-08,9,III,18,32,25,2,,, 50,proxy_est,low,"ALMA;FDD;JINSA_MAR24_PDF","Wave-weighted est: Alma waves=9 of 61 (15% × 172 = ~25). Range 18-32. ~50% cluster warheads confirmed. global_splits derived_max=46 ✓. bm_il_hits=~2 (Chart 4 all-projectile types)."
-2026-03-09,10,III,2,43,37,1,,, 50,observed_partial,low,"FDD;ALMA;JINSA_MAR24_PDF","Observed min=2 (cluster BM killed 2 — min 2 BM launched). Wave-weighted est: Alma waves=13 of 61 (21% × 172 = ~37). Range 2-43 (max capped at derived_max=43). bm_il_hits=~1 (Chart 4 all-projectile types). Alma waves=13."
-2026-03-10,11,III,15,22,22,1,300,,50,observed,medium,"JINSA_MAR11_PDF;FDD;ALMA;JINSA_MAR24_PDF","IDF Mar 10: ~24 BM/day rate cited at Israel (rounded). global_splits derived_max=22 (global=29 − UAE=7) — est capped at 22. Cumul=~300 BM at Israel confirmed. ~50% cluster warheads. bm_il_hits=~1 (Chart 4 all-projectile types)."
-2026-03-11,12,III,1,8,3,,5,,,proxy_est,low,"ALMA;JINSA_MAR24_PDF","Near-zero increment period: Mar10 cumul=300 ≈ Mar15 cumul=290+ → only ~0-20 BMs added Mar11-14. Est 2-5/day. Iran redirecting BM to Gulf states; Israel hit mainly by drones (explains Chart 4 spike). bm_il_hits=~5-6 (Chart 4 — likely drone hits). Alma waves=11."
-2026-03-12,13,III,1,8,3,,4,,,proxy_est,low,JINSA_MAR24_PDF,"Near-zero increment period (see Mar 11 note). Est 2-5 BMs/day at Israel. bm_il_hits=~4 (Chart 4 — likely drone hits). Alma waves=10 (Statista fill)."
-2026-03-13,14,III,1,8,3,,4,,,proxy_est,low,JINSA_MAR24_PDF,"Near-zero increment period. Est 2-5 BMs/day. bm_il_hits=~4 (Chart 4). Alma waves=11 (Statista fill)."
-2026-03-14,15,III,1,8,3,,2,,,proxy_est,low,JINSA_MAR24_PDF,"Near-zero increment period. Est 2-5 BMs/day. bm_il_hits=~2 (Chart 4). Alma waves=7 (Statista fill)."
-2026-03-15,16,III,1,8,3,8, 290+,,,anchor_only,medium,"INSS;FDD;JINSA_MAR24_PDF","bm_il_cumul=>290 BM at Israel (INSS/FDD — BM-only anchor). Consistent with ~300 at Mar10 + ~10-15 added Mar11-15. Daily est~3 BMs. bm_il_hits=~8 (Chart 4 — largely drone hits; see Mar 11 note)."
-2026-03-16,17,III,1,8,3,,1,,,proxy_est,low,"ALMA;JINSA;JINSA_MAR24_PDF","Near-zero increment period ending. Est 2-5 BMs. 75%+ Iranian launcher force destroyed by this date. bm_il_hits=~1 (Chart 4 all-projectile types). Alma waves=13."
-2026-03-17,18,III,2,8,3,2,,,,observed_partial,low,"ALMA;WIKI_HE;JINSA_MAR24_PDF","Observed min=2 (cluster BM killed 2; min 2 BM). Wave-weighted est~3 (2-5 BMs range). Alma waves=11. bm_il_hits=~1-2 (Chart 4 consistent)."
-2026-03-18,19,III,13,17,15,6,,92,majority,observed,medium,"JINSA_MAR24_PDF;ALMA;TIMES_IL","JINSA Chart 2 direct reading: Israel ~15 BM (±2). bm_il_hits=6 (Chart 4 all-projectile hits). Alma waves=13. israel_all_attacks_share=32%. cluster_pct=majority: Times of Israel late March confirms 'majority of ballistic missiles at Israel had cluster bomb warheads'."
-2026-03-19,20,III,16,20,18,8,,92,,observed,medium,"JINSA_MAR24_PDF;ALMA","JINSA Chart 2 direct reading: Israel ~18 BM (±2) — spike day. bm_il_hits=8 (Chart 4 all-projectile hits). Alma waves=19. Geographic split: TLV 31.6% North 31.6% Jerusalem 26.3% South 10.5%."
-2026-03-20,21,III,10,14,12,3,,92,,observed,medium,"JINSA;JINSA_MAR24_PDF;ALMA","JINSA Chart 2 direct reading: Israel ~12 BM (±2). bm_il_hits=3 confirmed from JINSA text ('3 missiles hit targets on March 20'). Alma waves: part of 29-wave Mar20-21 combined."
-2026-03-21,22,III,7,9,8,3,,92,,observed,medium,"JINSA_MAR24_PDF;REUTERS;ALMA","JINSA Chart 2 direct reading: Israel ~8 BM (±2). Refines prior range 8-15. bm_il_hits=3 (Chart 4). BM hit Arad and Dimona area (Reuters). Alma waves_cumul=329 confirmed (300+29)."
-2026-03-22,23,III,11,15,13,3,,92,,observed,medium,"JINSA_MAR24_PDF;ALMA","JINSA Chart 2 direct reading: Israel ~13 BM (±2). bm_il_hits=3 (Chart 4). israel_all_attacks_share=50%. Alma waves=8. NOTE: Bahrain=4 attribution was a Perplexity analyst error; corrected."
-2026-03-23,24,III,7,10,8,3,,92,,observed,medium,"JINSA_MAR24_PDF;ISW;ALMA","JINSA Chart 2 direct reading: Israel ~8 BM (±2). bm_il_hits=3 (Chart 4). Israel=15% of all attacks. Derived: global=21 − UAE=7 − Bahrain=2 = 12 max. Iraq=6 BM attributed to Mar 24. Alma waves=7."
-2026-03-24,25,III,8,11,10,6,,92,,observed,medium,"JINSA;JINSA_MAR24_PDF;ALMA;IDF_LIVE;ISW_MAR24","JINSA Chart 2 direct reading: Israel ~15 BM (mid-day; global=40). Final global=46 (JINSA 3/25 confirmed) → non_israel=35 → derived_max=11. bm_il_max capped at 11 (final-day constraint). Est=10 (consistent with JINSA ~10-15/day weekly avg). 6 hits confirmed. Worst interception day. Israel=29% of all attacks. Cluster munitions hit Tel Aviv and Haifa. ⚠ bm_il_hits=6 = all-projectile hits (Chart 4), not BM-only."
-2026-03-25,26,III,8,15,10,3,,92,,derived,high,"JINSA_MAR25_PDF;ALMA","Jordan=5 BM on Mar 25 (JINSA_MAR25_PDF). JINSA explicit: Israel 'roughly 10-15 missiles per day over past week'. Est=10. 3 hits confirmed. Alma waves_cumul=346 (anchor)."
-2026-03-26,27,III,8,16,10,2,,92,,derived,high,"JINSA;ALMA","Derived: global=31 − UAE=15 = 16 max. Est=10 based on JINSA weekly avg. 2 hits confirmed. Alma waves=11."
-2026-03-27,28,III,5,11,,,450+,,92,anchor_only,medium,"IDF;JNS;JINSA_MAR27_PDF;TIMES_IL","bm_il_cumul=>450 BM at Israel (Times of Israel Mar27 liveblog: 'more than 450 ballistic missiles at Israel since Feb 28'). Upgrades previous '>400' anchor. Global=21 partial day. Saudi Arabia=6 BM + Kuwait=4 BM (JINSA_MAR27_PDF). Israel max=21-10=11 (partial day). 92% interception aggregate confirmed."
-2026-03-28,29,III,8,12,10,,,92,,proxy_est,low,,Model validation date. ~10 BM/day current rate. Remaining stock est: ~500-700 BM.
+date,day_num,phase,bm_il_min,bm_il_max,bm_il_est,bm_il_hits,bm_il_cumul,alma_waves,intercept_pct,cluster_pct,data_type,confidence,primary_source,flags
+2026-02-28,1,I,50,73,50,4,,44,,,observed,medium,JINSA_MAR5_PDF,CONFLICT
+2026-03-01,2,I,39,57,39,3,,55,,,observed,medium,JINSA_MAR5_PDF,CONFLICT
+2026-03-02,3,I,17,28,19,1,,16,,,observed,medium,JINSA_MAR5_PDF,CONFLICT
+2026-03-03,4,I,12,20,14,2,,10,,,observed,medium,JINSA_MAR5_PDF,CONFLICT
+2026-03-04,5,I,5,9,6,2,128,10,,,observed,medium,BBC_ARABIC,CONFLICT
+2026-03-05,6,II,25,37,31,1,,11,,,proxy_est,low,ALMA,
+2026-03-06,7,II,16,24,20,1,,7,,,proxy_est,low,ALMA,
+2026-03-07,8,III,27,41,34,1,,12,,,proxy_est,low,ALMA,
+2026-03-08,9,III,20,30,25,2,,9,,50,proxy_est,low,ALMA,
+2026-03-09,10,III,2,43,37,1,,13,,50,observed_partial,low,FDD,
+2026-03-10,11,III,18,22,22,1,300,9,,50,observed,medium,JINSA_MAR11_PDF,
+2026-03-11,12,III,9,15,12,5,,11,,,proxy_est,low,ALMA,
+2026-03-12,13,III,9,14,11,4,,10,,,proxy_est,low,ALMA,
+2026-03-13,14,III,9,15,12,4,,11,,,proxy_est,low,ALMA,
+2026-03-14,15,III,6,10,8,2,,7,,,proxy_est,low,ALMA,
+2026-03-15,16,III,7,14,11,8,,10,,,proxy_est,medium,INSS,
+2026-03-16,17,III,10,17,13,1,,12,,,proxy_est,low,ALMA,
+2026-03-17,18,III,2,15,12,2,,11,,,observed_partial,low,WIKI_HE,
+2026-03-18,19,III,13,17,15,6,,13,92,majority,observed,medium,JINSA_MAR24_PDF,
+2026-03-19,20,III,16,20,18,8,,19,92,,observed,medium,JINSA_MAR24_PDF,
+2026-03-20,21,III,10,14,12,3,,13,92,,observed,medium,JINSA_MAR24_PDF,
+2026-03-21,22,III,7,9,8,2,,8,92,,observed,medium,JINSA_MAR24_PDF,
+2026-03-22,23,III,11,15,13,3,,8,92,,observed,medium,JINSA_MAR24_PDF,
+2026-03-23,24,III,7,10,8,3,,,92,,observed,medium,JINSA_MAR24_PDF,
+2026-03-24,25,III,8,11,10,6,,9,92,,observed,medium,JINSA_MAR24_PDF,
+2026-03-25,26,III,8,12,10,3,,20,92,,derived,high,JINSA_MAR25_PDF,
+2026-03-26,27,III,8,16,10,2,,11,92,,derived,high,JINSA,
+2026-03-27,28,III,9,11,10,2,450,,92,,observed_partial,medium,IDF,
+2026-03-28,29,III,2,4,3,1,,,92,,observed_partial,low,IDF_LIVE,

@@ -13,30 +13,57 @@
     "note_on_alma_waves": "alma_waves_* columns = Iran-origin attack waves toward Israel only (Alma definition). Includes both Iranian BM and Iranian drones/UAVs — NOT ballistic-missile-only. Used as proxy for BM activity, not as a BM count."
   },
   "project_structure": {
-    "data/": "Primary model inputs — CSV files and data registry (this file)",
-    "data/archive/": "Versioned snapshots of data files before major restructures",
-    "docs/": "Model design documents and methodology (e.g., initial strikes model.docx)",
-    "reports/": "Source PDFs from JINSA, ISW, and other primary sources",
-    "model/": "Python model scripts — NB stochastic model, Z-score monitor, forecasts"
+    "data/strikes_israel_daily.csv": "PRIMARY consolidated model input. One row per day, clean numeric schema with short flags. Feb 28–Mar 28.",
+    "data/inventory.csv": "Iranian BM/launcher stock snapshots by weapon type.",
+    "data/conflicts.md": "All unresolved source conflicts and open questions with resolution paths.",
+    "data/metadata.json": "Project metadata, methodology notes, update rounds.",
+    "data/sources/": "Raw per-source data, one subfolder per source type.",
+    "data/sources/registry.csv": "Master source index: URL, tier, type, access status for all sources.",
+    "data/sources/jinsa/": "JINSA PDF data: reports index, global daily BM, country splits, hits by day.",
+    "data/sources/alma/": "Alma data: confirmed report URLs, daily wave series, geographic distribution.",
+    "data/sources/idf/": "IDF official statements: cumulative anchors, interception rates.",
+    "data/sources/isw/": "ISW/UAE MoD daily breakdown: BM/drone/CM at UAE Feb28–Mar24.",
+    "data/sources/media/": "Hebrew+English press: barrage/siren counts, confirmed impact events.",
+    "data/sources/perplexity/": "Perplexity estimates by search round: accepted/rejected/contested with reasons.",
+    "data/archive/": "Versioned snapshots before major restructures.",
+    "docs/": "Model design documents and methodology.",
+    "reports/": "Source PDFs from JINSA, ISW, and other primary sources.",
+    "model/": "Python model scripts — NB stochastic model, Z-score monitor, forecasts."
   },
-  "primary_files": {
-    "strikes_israel_daily.csv": "PRIMARY model input. One row per day Feb 28–Mar 28. Israel-specific BM data.",
-    "alma_proxy.csv": "Continuous Alma wave series (Iran→Israel proxy). Feb 28–Mar 26.",
-    "global_splits_daily.csv": "JINSA global BM totals + per-country splits (UAE, Bahrain, Kuwait, Iraq). Feb 28–Mar 28.",
-    "inventory.csv": "Iranian BM/launcher stock snapshots by weapon type.",
-    "events.csv": "Confirmed specific BM impact events with location and casualties.",
-    "sources.csv": "Source registry with confidence tiers and access status."
+  "consolidated_schema": {
+    "file": "strikes_israel_daily.csv",
+    "columns": {
+      "date": "ISO date",
+      "day_num": "Day of war (1=Feb28)",
+      "phase": "I=Days1-4 saturation; II=Days5-7 rapid collapse; III=Day8+ stochastic",
+      "bm_il_min": "Lower bound BM at Israel",
+      "bm_il_max": "Upper bound BM at Israel",
+      "bm_il_est": "Best estimate BM at Israel",
+      "bm_il_hits": "Confirmed projectile impacts in Israel (all types per JINSA Chart 4)",
+      "bm_il_cumul": "Cumulative BM at Israel (anchor values only where directly stated)",
+      "alma_waves": "Alma daily attack waves (Iran→Israel; includes BM+UAV)",
+      "intercept_pct": "Interception rate (92% aggregate late March; no daily series)",
+      "cluster_pct": "Cluster warhead percentage (50% through Mar10; majority thereafter)",
+      "data_type": "observed|observed_partial|derived|proxy_est|anchor_only|gap",
+      "confidence": "high|medium|low",
+      "primary_source": "Key into sources/registry.csv",
+      "flags": "CONFLICT=unresolved source conflict; DATE_DISPUTE=event date uncertain across sources"
+    }
   },
   "bm_il_cumul_anchors": [
     {"date": "2026-03-04", "value": "~128",  "source": "BBC_ARABIC/IDF",    "scope": "all_missiles_5-day_Feb28-Mar4; may include small non-BM fraction"},
     {"date": "2026-03-10", "value": "~300",  "source": "IDF/JINSA_MAR11_PDF","scope": "BM_only_confirmed"},
     {"date": "2026-03-15", "value": ">290",  "source": "INSS/FDD",           "scope": "BM_only_confirmed"},
-    {"date": "2026-03-27", "value": ">400",  "source": "IDF/JNS",            "scope": "BM_at_home_front"}
+    {"date": "2026-03-27", "value": ">450",  "source": "TIMES_IL",           "scope": "BM_at_home_front"}
   ],
   "phase_i_conflict": {
-    "description": "JINSA Mar5 PDF table gives direct per-day Israel BM counts (73/57/28/20/9 = 187 total) vs BBC/IDF 5-day anchor (~128). Discrepancy = 59 BMs.",
-    "resolution": "JINSA Mar5 preliminary global counts systematically overcounted vs Mar24 final (Day3: 186→138; Day4: 108→68). Israel-specific numbers likely similarly overcounted ~20-35%. cumul=128 retained as primary anchor; JINSA daily values used as observed upper bounds.",
-    "status": "unresolved — both values documented in strikes_israel_daily.csv notes"
+    "description": "Three incompatible readings of Phase I Israel BM counts. See conflicts.md CONFLICT-1 for full analysis.",
+    "reading_A_jinsa_old": "73/57/28/20/9 = 187 total (JINSA Mar5 PDF — earlier Perplexity reading)",
+    "reading_B_bbc_anchor": "~128 cumulative by Mar4 (BBC Arabic citing IDF)",
+    "reading_C_jinsa_new": "200/105/68/37/20 = 430 total (JINSA Mar5 PDF — new Perplexity reading; CONTESTED)",
+    "current_data_treatment": "est = BBC-proportioned (50/39/19/14/6); max = JINSA reading A (73/57/28/20/9). Reading C documented in sources/perplexity/estimates.csv as contested.",
+    "resolution_path": "Read JINSA Mar5 PDF directly: https://jinsa.org/wp-content/uploads/2026/03/Irans-Firepower-2026-03-05-1.pdf",
+    "status": "unresolved — see conflicts.md"
   },
   "data_gaps_current": [
     "Mar 27–28: no Alma waves data",
@@ -51,6 +78,89 @@
     "Saudi Arabia BM: only Mar 27 known (6); drone-heavy otherwise"
   ],
   "data_update_rounds": [
+    {
+      "round": 15,
+      "date": "2026-03-28",
+      "method": "restructure",
+      "key_additions": [
+        "Full data restructure: flat data/ directory → sources/ subfolder hierarchy",
+        "sources/registry.csv: replaces sources.csv (source index with URLs and metadata)",
+        "sources/jinsa/: reports.csv + global_daily.csv (prelim vs final) + country_splits.csv + hits_daily.csv",
+        "sources/alma/: reports.csv (confirmed URLs) + waves_daily.csv (replaces alma_proxy.csv) + geographic.csv",
+        "sources/idf/statements.csv: IDF official cumulative anchors and interception rate statements",
+        "sources/isw/uae_daily.csv: UAE MoD daily BM/drone/CM Feb28-Mar24 (replaces global_splits_daily.csv UAE columns)",
+        "sources/media/: barrages.csv + events.csv (moved from data/ root)",
+        "sources/perplexity/estimates.csv: all Perplexity estimates by round with accepted/rejected/contested status",
+        "strikes_israel_daily.csv: rewritten as clean consolidated table (no notes column; short flags only)",
+        "conflicts.md: new file documenting CONFLICT-1 (Phase I), CONFLICT-2 (Hebron date), CONFLICT-3 (128 scope), CONFLICT-4 (Alma 7-wave)",
+        "metadata.json: updated project_structure and consolidated_schema sections",
+        "Archived pre-restructure files to data/archive/pre_restructure_2026-03-28/",
+        "Phase I new Perplexity reading (200/105/68/37/20) documented as contested in perplexity/estimates.csv"
+      ],
+      "files_archived": ["alma_proxy.csv", "global_splits_daily.csv", "media_barrages.csv", "events.csv", "sources.csv"],
+      "files_created": [
+        "sources/registry.csv", "sources/jinsa/reports.csv", "sources/jinsa/global_daily.csv",
+        "sources/jinsa/country_splits.csv", "sources/jinsa/hits_daily.csv",
+        "sources/alma/reports.csv", "sources/alma/waves_daily.csv", "sources/alma/geographic.csv",
+        "sources/idf/statements.csv", "sources/isw/uae_daily.csv",
+        "sources/media/barrages.csv", "sources/media/events.csv",
+        "sources/perplexity/estimates.csv", "conflicts.md"
+      ]
+    },
+    {
+      "round": 14,
+      "date": "2026-03-28",
+      "method": "perplexity_search",
+      "key_additions": [
+        "Perplexity Feb28-Mar9 analysis incorporated",
+        "428 misread re-flagged (same recurring error as Round 10)",
+        "NEW contested reading: 200/105/68/37/20 for Israel-specific Days 1-5 (see conflicts.md CONFLICT-1)",
+        "Mar5-9 methodology comparison: Perplexity 5-day block vs our 6-day block",
+        "media_barrages.csv expanded to full war period (Feb28-Mar28, 29 rows)"
+      ]
+    },
+    {
+      "round": 13,
+      "date": "2026-03-28",
+      "method": "perplexity_media_count",
+      "key_additions": [
+        "Mar10-19 Perplexity analysis incorporated",
+        "Mar10: Perplexity est=30 flagged as physically impossible (exceeds global=29; derived_max=22 binding)",
+        "Mar11-16: Perplexity est=4-8/day rejected — commits same flawed '>290≈300' logic as original near-zero estimates",
+        "Mar17-19 Perplexity conflicts documented: Mar17 est=8-9 noted; Mar18/19 confirm our estimates ✓",
+        "DATE CONFLICT: 'At least 3 women killed near Hebron' attributed to Mar17 by Perplexity Mar10-19 but to Mar23 by Perplexity Mar20-26 — flagged in both rows and in media_barrages.csv",
+        "ALMA_DAILY_URLS updated with Mar15-17 data URLs (Mar16-1800, Mar17-1600, Mar18-1800) and early-war URLs (Mar6-1200, Mar6-7 weekend, Mar9-day11)",
+        "media_barrages.csv expanded: Mar10-19 rows added (19 days total, Mar10-28)"
+      ]
+    },
+    {
+      "round": 12,
+      "date": "2026-03-28",
+      "method": "perplexity_media_count",
+      "key_additions": [
+        "Mar20-26 Perplexity analysis: media-siren-count estimates compared against JINSA Chart 2 direct readings",
+        "JINSA Chart 2 retained as primary for Mar20-24 — direct per-country chart data outweighs inference-based media count",
+        "Mar21: Arad cluster hit (64 injured, 7 serious) + Dimona impact documented; Perplexity est=15 rejected (cluster munitions explain casualties from ≤3 BMs)",
+        "Mar22: Perplexity conflict est=10 documented and rejected (JINSA Chart 2 direct=13 retained)",
+        "Mar23: West Bank/Hebron fatal hit (3 women killed) + power plant miss documented; Perplexity est=5 rejected (misuses all-attack-type share as BM proxy)",
+        "Mar24: Bnei Brak cluster (9 injured) + Eshtaol/Route 1 (19 injured) event detail added",
+        "Mar25: max tightened 15→12 (Perplexity confirms Saudi-heavy day, few Israeli impacts)",
+        "ALMA_DAILY_URLS: Mar20-1600 and Mar26-1800 confirmed URLs added"
+      ]
+    },
+    {
+      "round": 11,
+      "date": "2026-03-28",
+      "method": "media_siren_count",
+      "key_additions": [
+        "NEW METHOD: media siren/barrage count — Hebrew+English media barrage event logs → missile estimate. 5-6 distinct barrages ≈ 9-12 missiles; calibrated vs JINSA global constraint",
+        "Mar27: est 8→10, min 5→9, max stays 11 (JINSA constraint); hits=2 confirmed (Haifa cluster + Tel Aviv fatal 1 killed); data_type upgraded anchor_only→observed_partial",
+        "Mar28: est drastically revised 10→3, min 8→2, max 12→4; hits=1 (Jerusalem-area, several lightly hurt per ToI); data_type proxy_est→observed_partial",
+        "Mar28 Houthi BM from Yemen (1 missile) documented in notes — NOT counted (out of Iran BM scope)",
+        "New source added: YNET (Hebrew media, Mar27-28 barrage event logs)"
+      ],
+      "new_sources": ["YNET"]
+    },
     {
       "round": 10,
       "date": "2026-03-28",

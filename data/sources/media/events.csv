@@ -1,0 +1,12 @@
+date,event_type,location,bm_count_min,bm_count_max,casualties_killed,casualties_injured,warhead_type,confidence,source,notes
+2026-03-05,cluster_strike,central_israel,1,,, 2+,cluster,medium,FDD,Cluster munition impact. At least 6 confirmed cluster attacks by Mar 5.
+2026-03-08,cluster_strike,central_israel,2,,2,,cluster,medium,"FDD;WIKI_EN",2 killed. At least 2 BM in wave (minimum count from casualties).
+2026-03-17,cluster_strike,unspecified,2,,2,,cluster,medium,WIKI_HE,Cluster BM killed 2.
+2026-03-17,strike,Hebron_area;West_Bank,1,,3,,standard,medium,"TIMES_IL;ALMA_MAR17_1600","At least 3 women killed in Iranian missile strike near Hebron (West Bank). Confirmed on Mar17 via ToI liveblog entry + Alma Mar17 report co-citation (R15). DATE CONFLICT RESOLVED: previously contested Mar17 vs Mar23 — Mar17 confirmed."
+2026-03-21,barrage,Arad;Dimona_area,8,15,, scores_hurt,,medium,REUTERS,BM hit desert towns Arad and Dimona area. Count 8-15 from JINSA weekly avg.
+2026-03-24,cluster_strike,Tel_Aviv,1,,, 6,cluster,medium,JINSA_MAR24_PDF,Iranian BM (~100kg warhead) impacted 4 sites in Tel Aviv. 6 lightly wounded.
+2026-03-24,cluster_strike,Haifa,1,,,, cluster,medium,JINSA_MAR24_PDF,Cluster munitions from BM impacted multiple sites throughout Haifa.
+2026-03-24,strike,Negev_Bedouin_village,1,,, 3,standard,medium,JINSA_MAR24_PDF,BM fragments struck house in Tel Arad Bedouin village and a mobile home. 3 injured including 2-month-old infant.
+2026-03-22,strike,multiple,14,22,,,,medium,REUTERS,Multiple BM strikes. Widespread debris. Count derived from global=26 minus UAE=4.
+2026-03-27,strike,multiple;West_Bank,8,12,,,,medium,REUTERS,Large fragments scattered across Israel and West Bank. IDF struck Iranian missile production site same day.
+2026-03-28,strike,Beit_Shemesh_area;west_Jerusalem,1,,, 12,standard,medium,"IDF_LIVE;TIMES_IL;ANEWS","Iranian missile hit near Beit Shemesh / west of Jerusalem. 12 injured (anews.com.tr). ToI: 'several lightly hurt'. IDF live Mar28 page confirms. Note: separate Eilat impact same day is from Houthi (Yemen origin) — NOT counted in Iran BM scope."
