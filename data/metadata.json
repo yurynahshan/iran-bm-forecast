@@ -1,0 +1,217 @@
+{
+  "project": "Iran Missile Strike Analysis",
+  "metadata_updated": "2026-03-28",
+  "data_scope": {
+    "include": "Iranian ballistic missiles (BM) targeting Israel only",
+    "exclude": [
+      "Hezbollah rockets, missiles, UAVs (tracked separately by Alma — NOT in this dataset)",
+      "Iraqi militia strikes",
+      "Houthi strikes",
+      "Iranian Shahed/UAV/drone launches (even Iran-origin — not BM)",
+      "Iranian BM targeting non-Israel targets (Gulf states, Saudi Arabia, etc.)"
+    ],
+    "note_on_alma_waves": "alma_waves_* columns = Iran-origin attack waves toward Israel only (Alma definition). Includes both Iranian BM and Iranian drones/UAVs — NOT ballistic-missile-only. Used as proxy for BM activity, not as a BM count."
+  },
+  "project_structure": {
+    "data/": "Primary model inputs — CSV files and data registry (this file)",
+    "data/archive/": "Versioned snapshots of data files before major restructures",
+    "docs/": "Model design documents and methodology (e.g., initial strikes model.docx)",
+    "reports/": "Source PDFs from JINSA, ISW, and other primary sources",
+    "model/": "Python model scripts — NB stochastic model, Z-score monitor, forecasts"
+  },
+  "primary_files": {
+    "strikes_israel_daily.csv": "PRIMARY model input. One row per day Feb 28–Mar 28. Israel-specific BM data.",
+    "alma_proxy.csv": "Continuous Alma wave series (Iran→Israel proxy). Feb 28–Mar 26.",
+    "global_splits_daily.csv": "JINSA global BM totals + per-country splits (UAE, Bahrain, Kuwait, Iraq). Feb 28–Mar 28.",
+    "inventory.csv": "Iranian BM/launcher stock snapshots by weapon type.",
+    "events.csv": "Confirmed specific BM impact events with location and casualties.",
+    "sources.csv": "Source registry with confidence tiers and access status."
+  },
+  "bm_il_cumul_anchors": [
+    {"date": "2026-03-04", "value": "~128",  "source": "BBC_ARABIC/IDF",    "scope": "all_missiles_5-day_Feb28-Mar4; may include small non-BM fraction"},
+    {"date": "2026-03-10", "value": "~300",  "source": "IDF/JINSA_MAR11_PDF","scope": "BM_only_confirmed"},
+    {"date": "2026-03-15", "value": ">290",  "source": "INSS/FDD",           "scope": "BM_only_confirmed"},
+    {"date": "2026-03-27", "value": ">400",  "source": "IDF/JNS",            "scope": "BM_at_home_front"}
+  ],
+  "phase_i_conflict": {
+    "description": "JINSA Mar5 PDF table gives direct per-day Israel BM counts (73/57/28/20/9 = 187 total) vs BBC/IDF 5-day anchor (~128). Discrepancy = 59 BMs.",
+    "resolution": "JINSA Mar5 preliminary global counts systematically overcounted vs Mar24 final (Day3: 186→138; Day4: 108→68). Israel-specific numbers likely similarly overcounted ~20-35%. cumul=128 retained as primary anchor; JINSA daily values used as observed upper bounds.",
+    "status": "unresolved — both values documented in strikes_israel_daily.csv notes"
+  },
+  "data_gaps_current": [
+    "Mar 27–28: no Alma waves data",
+    "Mar 28: no JINSA global BM data",
+    "Alma anchor conflict Mar21→Mar24: chain 329+8+7+9=353 ≠ 346 stated. 7-wave discrepancy confirmed real (Alma OSINT). Both anchors authoritative; intermediate cumuls (Mar22-23) not reliable.",
+    "Mar25 daily=20 is derived (not directly stated by Alma); Statista undercount pattern confirmed for late March.",
+    "Alma Mar20-21: Statista daily sum=21 vs Alma combined=29 — 8-wave undercount in Statista for this period; use stated anchor (329) not daily sum.",
+    "intercept_pct: 92% confirmed for late-March aggregate only; no daily series",
+    "cluster_pct: 50% confirmed through Mar 10 only; unknown thereafter",
+    "Bahrain daily BM: only Mar 22–24 known (2 on Mar23, 7 on Mar24)",
+    "Kuwait daily BM: only Mar 24 (17) and Mar 27 (4) known",
+    "Saudi Arabia BM: only Mar 27 known (6); drone-heavy otherwise"
+  ],
+  "data_update_rounds": [
+    {
+      "round": 10,
+      "date": "2026-03-28",
+      "method": "image_analyzed + perplexity_search",
+      "key_additions": [
+        "Alma Mar24 infographic (from Mar25 18:00 report URL): cumul=346 confirmed as END-OF-MAR24 anchor; Mar24 daily=9 confirmed; geographic Mar24; casualties 18 killed+5045+ injured",
+        "Alma Mar26 infographic + URL: cumul=377 confirmed as end-of-Mar26; Mar26 daily=11 confirmed",
+        "Mar25 daily DERIVED=20 waves (377-346-11=20); Statista value of 9 was severe undercount",
+        "Mar21 cumul=329 re-confirmed via Alma Mar22 18:00 report (explicitly stated); reverted from incorrect 322",
+        "7-wave anchor conflict (329→346 but chain gives 353) confirmed as real per Alma OSINT discussions; both anchors authoritative",
+        "Mar22=8, Mar23=7 confirmed from Alma daily report URLs (Mar23/24 18:00 reports)",
+        "bm_il_cumul at Mar27 upgraded from >400 to >450 (Times of Israel Mar27 liveblog)",
+        "cluster_pct late March: 'majority' (>50%) per Times of Israel (upgrades 50% anchor from Mar10 to majority for Mar18+)",
+        "Hezbollah data (out of Iran BM scope): total waves Mar2-26=1177; Mar26=93 waves; weapon mix: UAV=806 (68.4%), Rockets/Missiles=291 (24.7%), Anti-tank=63 (5.3%)",
+        "Perplexity Day1 misread flagged: table shows 428 at Israel = global value; JINSA PDF direct reading of 73 retained",
+        "Iraq 6 BM: confirmed overnight Mar23-24 per ISW (straddles both days)",
+        "New sources: ALMA_MAR24_DAILY, ALMA_MAR26_DAILY, ALMA_DAILY_URLS"
+      ],
+      "new_sources": ["ALMA_MAR24_DAILY", "ALMA_MAR26_DAILY", "ALMA_DAILY_URLS"]
+    },
+    {
+      "round": 9,
+      "date": "2026-03-28",
+      "method": "image_analyzed",
+      "key_additions": [
+        "alma_proxy.csv: corrected daily values Feb28-Mar9 using confirmed Statista+Alma series (Feb28: 25→44, Mar1: 62→55, Mar2: 2→16, Mar3: 24→10, Mar4: 7→10, Mar5: 9→11, Mar7: 7→12, Mar9: 12→13)",
+        "alma_proxy.csv: all cumul values recomputed from confirmed daily series",
+        "NEW ANCHOR: alma_waves_cumul=235 at Mar14 (from Alma Weekend Update Mar13-14 infographic)",
+        "Alma infographic confirms bar chart values are identical to Statista series — Statista = Alma data source confirmed",
+        "Cumulative corrections: Mar9 cumul 186→187, Mar11 cumul 206→207 (1-wave each; from upstream daily corrections)",
+        "Downstream cumuls Mar15-19 unchanged: 245/257/268/281/300 remain consistent with corrected upstream",
+        "Alma Weekend Mar13-14: geographic breakdown (North=7, TLV=4, South=5, Jerusalem=2); casualties: 15 killed + 3195+ injured",
+        "Cumulative geographic through Mar14: TLV=90 (38.3%), North=56 (23.8%), South=53 (22.6%), Jerusalem=36 (15.3%)",
+        "ALMA_WEEKEND_MAR1314 added to sources.csv"
+      ],
+      "new_sources": ["ALMA_WEEKEND_MAR1314"]
+    },
+    {
+      "round": 8,
+      "date": "2026-03-28",
+      "method": "pdf_direct + chart_image",
+      "key_additions": [
+        "ISW/UAE MoD chart incorporated: daily UAE BM + drone + CM for all 25 days Feb28-Mar24",
+        "UAE BM Day1=137 (31% of global 438), Day2=28, Mar5-9≈0 (drone-only period at UAE)",
+        "UAE drone peak: Mar1=332, Feb28=209 — confirms Iran shifted from BM to drones as launcher force degraded",
+        "UAE 10-day BM sum≈192 → consistent with CAPSS 605 Gulf4 total (UAE≈32% share)",
+        "bm_il_derived_max now computable for all days from bm_global - bm_uae",
+        "global_splits_daily.csv: bm_uae column now fully populated Feb28-Mar24",
+        "JINSA 3/24 PDF parsed directly: Chart 1 global daily BM confirmed, all values match existing data",
+        "JINSA Firepower PDF parsed: inventory tables confirmed; Phase I Israel direct series obtained (73/57/28/20/9)",
+        "28 cruise missiles total war (JINSA) — all launched at UAE on Feb28 per ISW chart (tentative)"
+      ],
+      "new_sources": ["ISW_UAE_CHART"],
+      "pdf_sources_parsed": ["Operations-Epic-Fury-and-Roaring-Lion-03.24.26.pdf", "Irans-Firepower-2026-03-05-1.pdf"]
+    },
+    {
+      "round": 7,
+      "date": "2026-03-28",
+      "method": "pdf_direct",
+      "key_additions": [
+        "JINSA Mar5 PDF table: first direct per-day Israel BM for Phase I (73/57/28/20/9)",
+        "Phase I data_type upgraded from proxy_est to observed for Days 1-5",
+        "JINSA Mar5 global totals vs Mar24 finals: Day3 186→138, Day4 108→68 — confirms preliminary overcount",
+        "Inventory table confirmed: Launchers=400→75% lost; MRBM=~2000→47-73% lost; SRBM=6000-8000→23-52% lost",
+        "88% drop against Israel by Day 5; 90% total decline per JINSA Mar5 text",
+        "alma_proxy.csv: Mar 25 daily=9 added (Statista source)"
+      ],
+      "new_sources": ["JINSA_MAR5_PDF (upgraded from perplexity to pdf_direct)"]
+    },
+    {
+      "round": 6,
+      "date": "2026-03-28",
+      "method": "perplexity_search",
+      "key_additions": [
+        "Mar 10: bm_il_cumul=~300 anchor confirmed — IDF statement (JINSA 3/11/26 PDF). Moved from Mar 12.",
+        "Mar 22: UAE=4, Bahrain=4 BM (JINSA 3/24) → bm_il revised to 14-18",
+        "Mar 23: UAE=7, Bahrain=2, Iraq=6 (Mar23-24 window) → bm_il revised to 8-12; Israel=15% of all attacks",
+        "Mar 24: Kuwait=17, Bahrain=7, UAE=5, Iraq=6 → non-Israel=35; Israel=46-35=11 max; Israel=29% of all attacks",
+        "Mar 24 partial: 40 BM by 11:00 ET, 46 final — 6 additional missiles after JINSA report cutoff",
+        "Global cumulative by Mar 24: 1,550 BM + 3,670+ drones + 28 cruise missiles (JINSA 3/24)",
+        "Saudi Arabia = largest Iranian attack-event target in late March (13-17 events/day, mostly drones)",
+        "Statista confirmed = Alma wave data, not independent source",
+        "ISW March 27 report: qualitative only, no per-day numeric table"
+      ],
+      "new_sources": ["JINSA_MAR11_PDF", "JINSA_MAR24_PDF", "ALMA_PATTERNS", "ISW_MAR24"]
+    },
+    {
+      "round": 5,
+      "date": "2026-03-28",
+      "method": "perplexity_search",
+      "key_additions": [
+        "Mar 5: alma_waves=9; Mar 6: alma_waves=7; Mar 7: alma_waves=7 cumul=165; Mar 9: alma_waves=12 cumul=186; Mar 10: alma_waves=9",
+        "Mar 20: bm_il_hits=3 (JINSA); Mar 21: alma_waves_cumul=329 confirmed (300+29=329)"
+      ],
+      "gaps_closed": "Mar 5-7 and Mar 9-10 Alma wave series filled. Daily wave series now continuous Feb28-Mar26."
+    },
+    {
+      "round": 4,
+      "date": "2026-03-28",
+      "method": "perplexity_search",
+      "key_additions": [
+        "Mar 4: alma_waves=7 cumul=118; Mar 8: alma_waves=9; Mar 20-21: 29 waves combined",
+        "Mar 22-26: Alma and JINSA data (waves + global BM + country splits)"
+      ],
+      "known_inconsistency": "Alma running cumulative Mar19(300)+29+8+7+9=353 ≠ stated 346 at Mar25. 7-wave discrepancy unresolved. Use stated anchor values only."
+    },
+    {
+      "round": 3,
+      "date": "2026-03-28",
+      "method": "perplexity_search",
+      "key_additions": [
+        "Alma daily wave series filled Feb28-Mar19",
+        "JINSA Mar5 PDF: launcher/MRBM/SRBM attrition breakdown",
+        "Data cleaning: renamed missiles_il_* to bm_il_*; separated global vs Israel counts"
+      ]
+    },
+    {
+      "round": 2,
+      "date": "2026-03-28",
+      "method": "perplexity_search",
+      "key_corrections": [
+        "Feb28 count 428 is GLOBAL — corrected",
+        "Initial BM stock revised 2000→2500",
+        "Wave discrepancy (227/300/346/668) resolved"
+      ]
+    },
+    {
+      "round": 1,
+      "date": "2026-03-28",
+      "method": "direct_fetch",
+      "sources_ok": ["JINSA", "FDD", "ALMA(Mar20)"],
+      "sources_blocked": ["ISW", "REUTERS", "WAPO", "GUARDIAN", "NYPOST", "WIKI_EN"]
+    }
+  ],
+  "resolved_discrepancies": [
+    {
+      "field": "cumulative_attack_waves",
+      "status": "RESOLVED",
+      "resolution": "All figures internally consistent — different definitions and time windows.",
+      "breakdown": [
+        {"value": 227,    "source": "INSS/FDD", "cutoff": "Mar 15", "scope": "Iran→Israel, analytical groupings, BM+UAV"},
+        {"value": 300,    "source": "Alma",     "cutoff": "Mar 19", "scope": "Iran→Israel, Alma wave def, BM+UAV"},
+        {"value": 346,    "source": "Alma",     "cutoff": "Mar 25", "scope": "Iran→Israel, Alma wave def, BM+UAV"},
+        {"value": "600+", "source": "combined", "cutoff": "various","scope": "Iran + Hezbollah combined — NOT Iran-only"}
+      ]
+    },
+    {
+      "field": "initial_bm_stock",
+      "status": "RESOLVED",
+      "value": 2500,
+      "source": "ALMA Mar1 + TIMES_IL (both citing IDF assessment)"
+    },
+    {
+      "field": "feb28_count_scope",
+      "status": "RESOLVED",
+      "resolution": "438 = global (JINSA final). Israel Day1 = 73 (JINSA Mar5 preliminary). 5-day cumul at Israel = ~128 (BBC/IDF anchor). Conflict unresolved — see phase_i_conflict."
+    },
+    {
+      "field": "mar24_global_count",
+      "status": "RESOLVED",
+      "resolution": "40 = mid-day snapshot (JINSA 3/24 PDF as of 11am ET). 46 = final day count (JINSA 3/25 PDF confirmed). Use 46 as final."
+    }
+  ]
+}

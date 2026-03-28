@@ -1,0 +1,10 @@
+date,weapon_type,pre_war_stock_min,pre_war_stock_max,launched_global_cumul,launched_israel_cumul,destroyed_on_ground_min,destroyed_on_ground_max,remaining_min,remaining_max,depleted_pct,confidence,source,notes
+2026-02-28,BM_all,2500,2500,,,,,,,,medium,"ALMA;TIMES_IL",IDF assessment at war start: ~2500 usable BM. Pre-June-2025 stock was ~3000 before prior conflict.
+2026-02-28,drones_all,3670,3670+,,,,,,,,medium,JINSA_MAR24_PDF,JINSA Mar 24: >3670 drones launched globally since war began (cumulative figure used as pre-war proxy).
+2026-02-28,cruise_missiles,28,28,,,,,,,,medium,JINSA_MAR24_PDF,JINSA Mar 24: 28 cruise missiles launched globally since war began.
+2026-03-05,BM_launchers,400,400,,,,,70,100,75%,medium,JINSA_MAR5_PDF,~400 launchers pre-war; ~75% neutralized by ~Mar 5-7; ~70-100 remaining.
+2026-03-05,MRBM,2000,2000,,,,,40,340,47-73%,medium,JINSA_MAR5_PDF,~2000 MRBM pre-war; 47-73% lost by Mar 5; ~40-340 remaining.
+2026-03-05,SRBM,6000,8000,,,,,2620,5120,23-52%,medium,JINSA_MAR5_PDF,6000-8000 SRBM pre-war; 23-52% lost by Mar 5; ~2620-5120 remaining.
+2026-03-16,BM_launchers,400,400,,,,,,, 75%+,medium,"JINSA;NYPOST;FDD",75%+ launcher force destroyed. NY Post: 60-70%. FDD: >70% launchers + >85% detection/defense neutralized.
+2026-03-24,BM_all,2500,2500,1550,,,,,,,medium,JINSA_MAR24_PDF,Launched globally by Mar 24: 1550 BM total (JINSA 3/24 PDF).
+2026-03-26,BM_all,2500,2500,1625,400+,2000,2500,500,700,70%+,medium,"JINSA;IDF;JNS;WALLA",Launched globally by Mar 26: 1625 BM (JINSA). Launched at Israel by Mar 27: >400 (IDF/JNS). Destroyed on ground: 2000-2500 (Walla — pre-launch destruction by IL/US strikes). Remaining: ~500-700. IDF: well over 70% neutralized. Note: destroyed-on-ground + launched may overlap in sourcing.
