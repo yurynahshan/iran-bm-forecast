@@ -240,7 +240,17 @@ where $\bar{t}$ and $\overline{\log\bar{r}}$ are the weighted means. The WLS est
 
 **Physical interpretation:** Iran's Israel-specific launch rate decays faster than the total fleet average because Israel preferentially targets Israel-facing assets. This is corroborated by IDF reporting that >80% of Iran's Israel-facing launch capacity was neutralised by Day 12, far more than the ~20% of total fleet destroyed by that point. The data-derived rate therefore reflects actual Israel-specific targeting efficiency.
 
-**Cross-check:** $\alpha^O = 0.020 \approx 2.5 \times \alpha^C$ — consistent with a 2.5× priority-targeting multiplier over the intelligence-derived fleet-average rate, providing independent physical corroboration of the data-derived estimate.
+**Cross-check 1 — intelligence ratio:** $\alpha^O = 0.020 \approx 2.5 \times \alpha^C$ — consistent with a 2.5× priority-targeting multiplier over the intelligence-derived fleet-average rate, providing independent physical corroboration of the data-derived estimate.
+
+**Cross-check 2 — independent source (Alma waves):** Applying the identical WLS method to Alma Research attack-wave counts (Days 14–29) — a fully independent source that does not use JINSA or IDF BM estimates — yields $\hat{\alpha}^{\mathrm{Alma}} = 0.024$/day (HL = 29 days). The weekly window comparison:
+
+| Window | Days | isr\_bm rate | Alma wave rate |
+|--------|------|-------------|----------------|
+| IIIb week 1 | 14–20 | 12.71/d | 11.86/d |
+| IIIb week 2 | 21–27 | 11.14/d | 11.00/d |
+| IIIb partial | 28–29 | 10.00/d | 8.00/d |
+
+The two sources agree closely in weeks 1–2 and diverge in the partial window (Days 28–29), where Alma shows a steeper drop-off. The resulting $\alpha^{\mathrm{Alma}} = 0.024$/day is 20% higher than $\alpha^O = 0.020$/day — well within the noise range for a 2-day partial window — and confirms the same structural finding: the decay signal is present and consistent across independent data streams. Note that Alma counts include Iranian UAVs alongside ballistic missiles, so the absolute level is not directly comparable to BM counts; the decay *rate* comparison is valid because both sources track the same underlying Iranian launch system.
 
 **mu0 calibration — closed-form MLE with alpha fixed:**
 

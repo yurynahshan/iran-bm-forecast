@@ -126,7 +126,7 @@ No operational pauses detected. The Poisson process produces some low days (Mar 
 The decay parameter α measures the rate at which Iran's effective launch capacity is being reduced each week:
 
 - At α=0.020/day (Model O): ~13% of remaining capacity lost per week. This reflects all current suppression factors combined — Israeli strikes, crew attrition, logistics degradation, and coordination disruption. It is the empirically observed rate; Israeli strike effectiveness is a major contributor but cannot be isolated from the other factors.
-- At α=0.0083/day (Model C): ~5.7% of remaining capacity lost per week, consistent with the observed physical launcher count decline (160→140 over Days 12–28). Under this model, only physical destruction by Israeli strikes drives the decay — operational suppression factors are assumed negligible.
+- At α=0.0083/day (Model C): ~5.6% of remaining capacity lost per week, consistent with the observed physical launcher count decline (160→140 over Days 12–28). Under this model, only physical destruction by Israeli strikes drives the decay — operational suppression factors are assumed negligible.
 
 **Key implication:** The smooth exponential decline is inconsistent with single decisive strikes on concentrated high-value launchers — those would produce step-drops, not a smooth curve. The pattern is consistent with gradually accumulated attrition across a distributed network, though operational tempo reduction by choice and logistics degradation are alternative explanations that cannot be excluded from count data alone.
 
@@ -148,27 +148,76 @@ Under either model, Iran retains meaningful BM strike capability throughout Apri
 
 > **Uncertainty note:** The prediction intervals reflect Poisson sampling variability at fixed model parameters. The intelligence-derived α range of [0.004–0.014] day⁻¹ translates to an April forecast range of approximately 240–330 BMs under the conservative scenario — substantially wider than the per-model PIs. The two-scenario bracket conveys this uncertainty.
 
+### Weekly breakdown and rate of decline
+
+| Week | Dates | Model C | Model O | C week-on-week | O week-on-week |
+|------|-------|---------|---------|----------------|----------------|
+| Week 1 | Mar 29–Apr 4 | 74.3 | 64.8 | — | — |
+| Week 2 | Apr 5–11 | 70.1 | 56.3 | −5.6% | −13.1% |
+| Week 3 | Apr 12–18 | 66.2 | 49.0 | −5.6% | −13.1% |
+| Week 4 | Apr 19–25 | 62.4 | 42.6 | −5.6% | −13.1% |
+| Week 5 | Apr 26–29 | 34.1 | 21.8 | — (4 days) | — (4 days) |
+| **April total** | **Apr 1–29** | **274.8** | **205.5** | | |
+
+The weekly decline is constant in percentage terms — a direct consequence of exponential decay. Under Model C, each week sees ~5.6% fewer launches than the previous week; under Model O, ~13.1% fewer. By end of April, the daily rate falls to ~8.4/day (Model C) or ~5.3/day (Model O), down from ~10–11/day in late March.
+
+### Launcher attrition through April
+
+Starting from the intelligence-confirmed baseline of **~140 operational launchers at Day 28 (Mar 27)**:
+
+| Date | Model C — physical launchers | Model O — effective capacity |
+|------|------------------------------|------------------------------|
+| Mar 27 (baseline) | 140 | 140 |
+| Apr 1 | ~134 (6 destroyed) | ~127 (13 lost) |
+| Apr 8 | ~127 (13 destroyed) | ~110 (30 lost) |
+| Apr 15 | ~120 (20 destroyed) | ~96 (44 lost) |
+| Apr 22 | ~113 (27 destroyed) | ~83 (57 lost) |
+| Apr 29 | **~107 (34 destroyed)** | **~72 (68 lost)** |
+
+Under **Model C**, Israeli strikes are expected to physically destroy ~34 additional launchers during April — roughly 2–3 per week. Under **Model O**, effective operational capacity declines by ~68 units — nearly half the current baseline — driven by a combination of physical destruction, crew attrition, and logistics degradation.
+
+> **Interpretation note:** Model C's launcher count tracks physical destruction only. Model O's "effective capacity" reflects all suppression factors combined and is not directly comparable to an intelligence-reported launcher count.
+
+### Launcher depletion timeline
+
+Projecting the current attrition rates forward from 140 launchers, assuming no change in Israeli strike effectiveness or Iranian adaptation:
+
+| Threshold | Model C date | Model O date |
+|-----------|-------------|-------------|
+| 100 launchers | May 6, 2026 | Apr 12, 2026 |
+| 70 launchers | Jun 18, 2026 | Apr 30, 2026 |
+| 50 launchers | Jul 29, 2026 | May 17, 2026 |
+| 20 launchers | Nov 16, 2026 | Jul 2, 2026 |
+| 10 launchers | Feb 7, 2027 | Aug 5, 2026 |
+
+Under **Model O**, Iran would fall below 50 effective operational launcher-equivalents by mid-May, and below 20 by early July. Under **Model C**, the same thresholds are not reached until late July and mid-November respectively. These projections assume the current exponential decay continues without structural change — a decisive Israeli strike campaign or a significant Iranian adaptation would shift these dates substantially.
+
 ### What would change the picture
 
-**No decay (flat regime):** If the Attrition phase rate is truly flat (no statistically detectable decay — AIC-preferred on Days 14–29 alone), the April total would be ~330 BMs at ~11.4/day. This is above Model C's 275 and represents the scenario where Israeli attrition is not meaningfully reducing Iran's launch rate during the period observed.
+The forecasts and launcher projections above assume current conditions persist. Four scenarios would materially shift them:
 
-**Accelerating collapse** (both models' Z-scores go below −2):
-- Successful strike on a major missile storage/transfer hub
-- Successful strike that simultaneously degrades multiple launcher clusters
-- Logistics interdiction cutting resupply of propellant or warheads
+**Iranian operational recovery** — Model C materialises (Z_C stable, Z_O above +2):
+- April total tracks toward ~275 BMs; weekly totals stay near 70+ through April
+- Launcher depletion timeline shifts to Model C column: below 100 launchers not until May, below 50 not until late July
+- Signal: Iran has resolved operational bottlenecks — logistics throughput restored, dormant launchers brought back into rotation, crew readiness improved
+- The ~13%/week decline rate (Model O) would flatten to ~5.6%/week (Model C)
 
-**Escalation** (both models' Z-scores exceed +2):
-- Activation of a previously unused launcher reserve
-- Transfer of additional missiles from strategic stockpile to operational units
-- Political decision to escalate before ceasefire pressure builds
+**Israeli strikes accelerate** — Model O confirmed or exceeded (Z_O stable, Z_C below −2):
+- April total tracks toward ~206 BMs or below; weekly totals fall below 50 by Week 3
+- Launcher depletion accelerates: below 70 effective capacity by end of April, below 50 by mid-May
+- Signal: Israeli targeting is destroying both physical launchers and operational capacity at the observed 2%/day rate
+- The ~5.6%/week decline rate (Model C) would steepen to ~13%/week (Model O) or faster
 
-**Model O confirmed** (Z_O stable, Z_C below −2):
-- By Apr 15–21, cumulative April total falls in the Model O prediction range
-- Indicates Israeli strikes are destroying ~2%/day of capacity — effective sustained pressure
+**No meaningful attrition** — flat regime (both Z-scores above +2):
+- April total ~330 BMs at ~11.4/day throughout; weekly totals near 80 and stable
+- Launcher count effectively not declining — Israeli strikes insufficient to erode either physical or operational capacity
+- This scenario is above Model C and would imply the current observed decline in late March was transient noise, not structural decay
 
-**Model C confirmed** (Z_C stable, Z_O above +2):
-- Cumulative April total falls in the Model C range
-- Indicates Iran has resolved operational bottlenecks — logistics, crew readiness, or dormant launcher activation — bringing its effective firing rate closer to the physical capacity ceiling
+**Structural break — escalation or collapse** (both Z-scores exceed +2, or both drop below −2):
+- Upward break: activation of an unused launcher reserve, transfer from strategic stockpile, or political decision to surge before ceasefire pressure
+- Downward break: decisive strike on a logistics hub or major launcher cluster; would appear as a sudden step-drop rather than the current smooth decay — inconsistent with the distributed-network pattern seen so far
+
+The model discrimination checkpoint is **Apr 15–18**: by then, 18–21 days of April data provide 80–90% statistical power to distinguish Model C from Model O (see methodology.md §7 for power analysis).
 
 ---
 
@@ -199,7 +248,7 @@ The Saturation and Collapse phases were exceptional. The Attrition phase is the 
 | Attrition phase start ~Mar 13–14 | **Medium** | Statistical structural break identified at Day 14; Poisson-consistent variance from that point onward |
 | Exponential decay is real | **Medium** | Decay trend confirmed by denoised weekly averages and Attrition phase arc; poorly identified on Days 14–29 alone (n=16) |
 | Decay rate α_C = 0.0083/day | **Medium-High** | Derived from two authoritative launcher-count snapshots (IDF/Algemeiner Day 12; ISW/IDF Day 28); source uncertainty gives range [0.004–0.014] |
-| Decay rate α_O = 0.020/day | **Medium** | Derived from denoised Attrition phase data (three weekly windows: 0.016–0.021/day); corroborated by IDF report of >80% Israel-facing capacity neutralised by Day 12 |
+| Decay rate α_O = 0.020/day | **Medium** | Derived from denoised Attrition phase data (WLS on weekly aggregates); independently cross-checked against Alma attack-wave data (same method, independent source → α=0.024/day, 20% higher); corroborated by IDF report of >80% Israel-facing capacity neutralised by Day 12 |
 | Launcher capacity (not stockpile) is binding constraint | **Medium** | Intelligence confirms ~140 launchers vs ~1,500 missiles remaining; data shows no stockpile-depletion signal |
 | April forecast ~206–275 BMs | **Medium** | Conditional on current suppression factors persisting (Model O) or physical attrition rate holding (Model C); wider range ~240–330 if α uncertainty included |
 | No strategic pause or accumulation occurring | **Medium-High** | Supported by statistical independence test; limited power at current sample size |
