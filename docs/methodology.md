@@ -140,7 +140,7 @@ $$r_t = \frac{L_t - \hat{\mu}_t}{\sqrt{\hat{\mu}_t}}$$
 
 The Pearson statistic $X^2 = \sum_{t} r_t^2$ follows $\chi^2(n - p)$ under $H_0$: Poisson. The **dispersion index** $D = X^2/(n-p)$ should be $\approx 1$; values $> 1.5$ indicate overdispersion requiring NB.
 
-Results: $D = 0.99$–$1.08$ across all Poisson models — well-calibrated.
+Results: $D = 0.99$–$1.08$ under the exponential and piecewise Poisson models (M1, M4) — well-calibrated. The flat model (M0) shows $D \approx 1.22$, reflecting unmodelled trend rather than true overdispersion.
 
 **Autocorrelation test.** The Ljung-Box statistic at lag $h$:
 
@@ -150,13 +150,15 @@ where $\hat{\rho}_k = \mathrm{corr}(r_t,\, r_{t-k})$. Results: $Q(3) = 1.96$, $p
 
 ### 4.6 Phase III start detection
 
-The anchor day $t_0$ is determined by minimising AIC over candidate starts $t_0 \in \{8, 9, \ldots, 15\}$, fitting the Poisson exponential model to all Phase III data $\mathcal{T}(t_0) = \{t : t \geq t_0\}$:
+Phase III start is identified by three converging lines of evidence, all pointing to Day 14 (Mar 13):
 
-$$t_0^* = \underset{t_0 \in \{8,\ldots,15\}}{\arg\min}\; \mathrm{AIC}(t_0)$$
+1. **M4 structural break.** The best-fitting piecewise Poisson model places its internal breakpoint at Day 14, after which the decay rate drops from $\alpha_1 \approx 0.149$/day (half-life 4.7 days) to $\alpha_2 \approx 0.007$/day. This break is identified on a fixed dataset and is therefore a valid within-sample comparison.
 
-The variance-to-mean ratio $\mathrm{V/M}(t_0) = \hat{\sigma}^2 / \bar{L}$ is computed at each candidate as a secondary diagnostic; Poisson consistency requires $\mathrm{V/M} \approx 1$.
+2. **Variance-to-mean ratio.** The V/M ratio $\hat{\sigma}^2 / \bar{L}$ approaches 1.0 (Poisson-consistent) in the Days 14–29 window, and all 7-day back-test windows from Day 14 onward return $|Z| < 1.1$ under both models.
 
-Result: $t_0^* = 14$ (Mar 13), AIC = 82.76, V/M = 0.99. Days 11–13 (IIIa) remain a late-transition tail of Phase II collapse.
+3. **AIC scan (indicative).** Fitting the Poisson exponential to each candidate window $\mathcal{T}(t_0) = \{t \geq t_0\}$ and comparing AIC across candidates is **not strictly valid** — AIC is defined for fixed $n$ and rankings across different sample sizes are not meaningful. This scan is treated as suggestive only; the primary identification of $t_0 = 14$ rests on items 1 and 2.
+
+Days 11–13 (Phase IIIa) are treated as a late-transition tail of Phase II collapse and excluded from the Phase IIIb stable regime.
 
 ---
 
@@ -168,15 +170,17 @@ Two variants are maintained, reflecting genuine uncertainty in the forward decay
 
 **Training set:** $\mathcal{T}_C = \{t : 14 \leq t \leq 29\}$, $n = 16$ observations (Mar 13–28).
 
-**Rationale for anchor:** The piecewise model (best AIC) identifies a structural break at Day 14, after which the system enters a near-flat Phase IIIb regime. Model C fits only this settled regime, treating Days 11–13 as a transitional artefact that should not bias the forward rate estimate.
+**Rationale for anchor:** The piecewise model (best AIC) identifies a structural break at Day 14, after which the system enters a near-flat Phase IIIb regime. Model C is anchored at this settled regime, treating Days 11–13 as a transitional artefact.
 
 **Likelihood:**
 
 $$\ell_C(\mu_0, \alpha) = \sum_{t=14}^{29} \Bigl[ L_t\bigl(\log\mu_0 - \alpha(t - 14)\bigr) - \mu_0\,e^{-\alpha(t-14)} \Bigr]$$
 
-**MLEs:**
+**Parameters** (calibrated from the M4 post-break arm):
 
-$$\hat{\mu}_0^C = 11.75, \qquad \hat{\alpha}^C = 0.007\;\text{day}^{-1}$$
+$$\mu_0^C = 11.75, \qquad \alpha^C = 0.007\;\text{day}^{-1}$$
+
+> **Note:** These values correspond to the Phase IIIb segment of the jointly-fitted M4 piecewise model, not an independent MLE on Days 14–29 alone. An unconstrained MLE on Days 14–29 yields $\hat{\mu}_0 \approx 12.6$, $\hat{\alpha} \approx 0.013$ (half-life ~53 days); however, on that window the flat Poisson is preferred by AIC ($\Delta\mathrm{AIC} \approx +1.4$ for exponential vs flat), so no exponential decay is robustly identified in Phase IIIb independently. Model C is best understood as the M4-extrapolated slow-decay scenario, representing the upper end of plausible decay rates given Phase IIIb data.
 
 **Mean function:**
 
@@ -252,6 +256,8 @@ where $F^{-1}_{\mathrm{Poisson}(\lambda)}(q)$ is the quantile function of $\math
 |----------|---------|---------|----------------|
 | 50% PI | 0.25 | 0.75 | Most likely range on any single day |
 | 90% PI | 0.05 | 0.95 | Plausible extremes; exceedance = anomaly signal |
+
+> **Caveat — parameter uncertainty:** The prediction intervals above reflect **Poisson sampling uncertainty only**, conditional on the model parameters $(\mu_0^m, \alpha^m)$ being known. Profile likelihood 95% confidence intervals for $\alpha$ span approximately $[0.001,\, 0.044]$ day$^{-1}$ (half-life 16–693 days) for both training windows — the decay rate is poorly constrained at $n = 16$–$19$ observations. Both Model C ($\alpha = 0.007$) and Model O ($\alpha = 0.021$) lie within the same 95% CI. Parameter estimation uncertainty is the dominant source of forecast error and substantially widens the true uncertainty band beyond the reported PIs. The two-model scenario bracket is the practical substitute for a full uncertainty propagation.
 
 ### 6.2 Weekly aggregation
 
@@ -347,14 +353,14 @@ Decision rules (thresholds from standard normal, $\alpha = 0.05$):
 
 | File | Purpose |
 |------|---------|
-| `model/nb_model.py` | Both model definitions, daily forecast table, weekly summary, back-test, monitoring guide, CSV export |
+| `model/poisson_model.py` | Both model definitions, daily forecast table, weekly summary, back-test, monitoring guide, CSV export |
 | `model/model_diagnostics.py` | Model comparison (M0–M5), AIC table, overdispersion test, autocorrelation, structural break analysis |
 
 **Run forecast:**
 ```bash
-python model/nb_model.py                    # daily table + weekly summary
-python model/nb_model.py --backtest         # Phase III Z-score back-test
-python model/nb_model.py --verify           # observed vs predicted Phase III
+python model/poisson_model.py                    # daily table + weekly summary
+python model/poisson_model.py --backtest         # Phase III Z-score back-test
+python model/poisson_model.py --verify           # observed vs predicted Phase III
 ```
 
 **Run diagnostics:**

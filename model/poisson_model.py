@@ -5,18 +5,18 @@ Two calibrated variants:
 
   Model C (Conservative — "Iran sustains"):
       L_t ~ Poisson(mu_t),  mu_t = 11.75 * exp(-0.007 * (t - 14))
-      Anchored at Day 14 (Mar 13), Phase IIIb quasi-flat component.
-      Half-life: 101 days.
+      Calibrated from M4 piecewise post-break arm (Phase IIIb).
+      Half-life: 99 days.
 
   Model O (Optimistic — "Iran degrades"):
       L_t ~ Poisson(mu_t),  mu_t = 14.45 * exp(-0.021 * (t - 11))
-      Anchored at Day 11 (Mar 10), full Phase III exponential trend.
+      MLE on full Phase III (Days 11-29).
       Half-life: 33 days.
 
 Usage:
-    python nb_model.py                   # daily Mar29–Apr29 forecast (both models)
-    python nb_model.py --backtest        # Phase III back-test Z-scores
-    python nb_model.py --verify          # observed vs predicted for Phase III
+    python poisson_model.py                   # daily Mar29–Apr29 forecast (both models)
+    python poisson_model.py --backtest        # Phase III back-test Z-scores
+    python poisson_model.py --verify          # observed vs predicted for Phase III
 """
 
 import argparse

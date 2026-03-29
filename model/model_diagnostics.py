@@ -570,7 +570,7 @@ def main():
     print(f"  H6 (NB piecewise):         AIC={m5['aic']:.1f}  ΔAIC={m5['aic']-best_aic:+.1f}")
 
     print(f"\n  Overdispersion: Pearson χ²/df under best Poisson model = "
-          f"{pearson_diagnostics(obs, best_m['mus'], '', 0)['dispersion']:.3f}")
+          f"{pearson_diagnostics(obs, best_m['mus'], '', best_m['params'])['dispersion']:.3f}")
     print(f"  (1.0 = perfectly Poisson; >1.5 = NB warranted)")
 
 

@@ -10,11 +10,11 @@
 
 Iran's ballistic missile campaign against Israel has undergone a fundamental transformation in its first month. It opened with a brief, high-intensity saturation phase (Days 1–4, over 100 BMs/day globally, 14–50 BMs/day at Israel) then collapsed rapidly into a persistent, low-rate stochastic regime (~10–12 BMs/day) that has been stable since mid-March.
 
-The statistical model fitted to Phase III data (Day 14+, Mar 13+) is a **Poisson process with exponential decay**. This is not merely a mathematical convenience — it is the specific signature of a **distributed system undergoing constant-rate attrition**. The model's structure directly encodes what is happening to Iranian capabilities at the operational level.
+The statistical model used for April forecasting is a **Poisson process with exponential decay**. The formal best-fit model on Phase III data is a piecewise Poisson (structural break at Day 14); the single exponential is within ΔAIC < 0.3 and is retained for tractable scenario forecasting. The Poisson-with-decay pattern is consistent with a **distributed system undergoing gradual attrition** — this document explores what that interpretation implies operationally if correct.
 
 **Key findings:**
-1. Iran's BM campaign has shifted from a **strategic coordinated offensive** to a **distributed attrition campaign** where independent launcher nodes fire opportunistically, and the system degrades gradually as Israeli strikes remove nodes one by one.
-2. Iranian BM launches toward Israel operate as **independent autonomous units** — each launcher node makes its own firing decision with no detectable coordination or central scheduling across sites.
+1. Iran's BM campaign has shifted from a **strategic coordinated offensive** to what appears to be a **distributed attrition campaign**, where the statistical pattern is consistent with launcher nodes operating with high autonomy and gradual capacity erosion.
+2. Iranian BM launches toward Israel exhibit **statistical independence** consistent with autonomous launcher operation — the absence of detectable coordination or central scheduling is the simplest explanation, though this structural interpretation is a hypothesis rather than a proven fact.
 3. The capabilities of those autonomous units **decrease slowly over time** at a constant fractional rate of 0.7–2.1% per day, consistent with gradual Israeli attrition of distributed launch infrastructure.
 
 ---
@@ -42,7 +42,7 @@ The statistical model fitted to Phase III data (Day 14+, Mar 13+) is a **Poisson
 ### Phase IIIb — Persistent Stochastic Regime (Day 14+, Mar 13–present)
 
 - **Scale:** 6–19 BMs/day, mean ~11/day
-- **Character:** Stochastic, independent, slowly decaying. Poisson model fits cleanly from this point onward (V/M = 0.99, all back-test Z-scores below 1.1).
+- **Character:** Stochastic, independent, slowly decaying. Poisson model fits well from this point onward (V/M ≈ 0.92–0.99 depending on exact window, all back-test Z-scores below 1.1).
 - **Cumulative:** ~507 BMs at Israel by Mar 28 (Day 29)
 
 ---
@@ -55,31 +55,33 @@ The **Poisson process** is one of the most fundamental models in probability. It
 
 When the underlying rate is not constant but **declining over time**, the model is extended to a **Poisson process with exponential decay**: the average rate μ_t = μ₀ · e^(−αt) falls geometrically each day. This specific combination — random independent events with a decaying rate — is the mathematical fingerprint of a **depleting population under constant fractional attrition**. The textbook analogue is radioactive decay: a large number of atoms each independently decaying with a fixed daily probability, producing a random number of emissions that follows Poisson statistics at a rate that declines smoothly as the source depletes.
 
-This model fits Iranian Phase III BM data precisely because the same physical structure is present:
+The Poisson-exponential pattern is consistent with the following physical structure:
 - **Many independent nodes** (launchers distributed across Iran) each acting autonomously
 - **Each node has a fixed daily probability of being destroyed** or rendered non-operational by Israeli strikes
 - **Each surviving node fires randomly** when local conditions allow — no central coordination
 
-The fit was validated rigorously. The Poisson assumption was confirmed by a Pearson dispersion test (χ²/df ≈ 1.0, ideal), a Ljung-Box autocorrelation test (p=0.6, no serial correlation), and formal comparison against the more general Negative Binomial distribution (which was rejected — it added no explanatory power, ΔAIC = +2 to +3). All 13 rolling 7-day back-test windows across Phase III returned Z-scores below 1.1 — well within the stability threshold of 2.
+This is the most parsimonious explanation of the observed pattern, not a uniquely proven mechanism. Alternative explanations — command pacing at a slow tempo, logistics-driven variability, or mixed command structures — would need to generate a similar statistical signature to be ruled out.
 
-**What the model tells us:** Iran's Phase III launch system is not being managed centrally on a day-to-day basis. It is a distributed network of autonomous units, each operating on its own cycle, collectively producing a smoothly declining random output. The rate of decline directly measures Israeli strike effectiveness against that network.
+The fit was assessed through in-sample diagnostics. The Poisson assumption is supported by a Pearson dispersion test (χ²/df ≈ 1.0 under the best-fit models M1 and M4), a Ljung-Box autocorrelation test (p=0.6, no serial correlation), and formal comparison against the Negative Binomial (rejected, ΔAIC = +2 to +3). All 13 rolling 7-day in-sample windows across Phase III returned Z-scores below 1.1 — well within the stability threshold of 2. Note: these are in-sample calibration checks on overlapping windows, not out-of-sample forecast validation.
+
+**Primary operational interpretation:** Iran's Phase III launch pattern is most simply explained by a distributed network of units each operating on its own cycle, collectively producing a smoothly declining random output. The rate of decline is a candidate measure of Israeli strike effectiveness — subject to the caveats above.
 
 ### 3.1 Each launch is statistically independent
 
 **Confirmed by:** Zero autocorrelation in daily residuals (Ljung-Box p=0.6, lag-1 AC=+0.14).
 
-**Military meaning:** Each launcher node makes its own firing decision based on local conditions — missile availability, targeting solution, crew readiness, suppression status. There is no central daily quota, no coordinated scheduling across sites. Destroying one node does not signal or suppress others.
+**Military meaning:** The most parsimonious interpretation is that each launcher node makes its own firing decision based on local conditions — missile availability, targeting solution, crew readiness, suppression status — with no central daily quota and no coordinated scheduling across sites. Under this model, destroying one node would not signal or suppress others. At $n = 19$ days of data, alternative coordination models (command pacing, mixed processes) cannot be statistically ruled out; this is a structural hypothesis consistent with the data, not a uniquely proven mechanism.
 
-**Rules out:**
+**Inconsistent with:**
 - Central command throttling output up or down day-to-day
 - Planned pause-and-surge cycles (no periodicity detected)
-- Strategic accumulation for large salvos (the Mar 19=19 and Mar 25=15 peaks are Poisson tail events, not planned escalations)
+- Strategic accumulation for large salvos (the Mar 19=19 and Mar 25=15 peaks are consistent with Poisson variability under a slowly varying mean; at n=19 this cannot be proven conclusively)
 
 ### 3.2 The stockpile is not the binding constraint
 
 **Evidence:** If Iran were drawing from a nearly exhausted missile inventory, firing more today would leave fewer for tomorrow → negative day-to-day autocorrelation. None detected.
 
-**Military meaning:** Iran's usable missile stockpile remains large enough that daily depletion is operationally negligible. The binding constraint is **operational launcher capacity** — the number of launchers that are ready, undetected, and loaded on any given day — not total missile inventory.
+**Military meaning:** The absence of negative autocorrelation is consistent with Iran's usable missile stockpile being large enough that daily depletion is operationally negligible. The most parsimonious explanation is that the binding constraint is **operational launcher capacity** — launchers that are ready, undetected, and loaded — rather than total missile inventory. This inference is indirect; stockpile effects could be masked if replenishment keeps pace with consumption, or if the stockpile is large relative to daily draw-down.
 
 ### 3.3 The exponential decay is launcher attrition, not stockpile exhaustion
 
@@ -89,7 +91,9 @@ The fit was validated rigorously. The Poisson assumption was confirmed by a Pear
 
 **Two calibrated models reflect genuine uncertainty in the decay rate:**
 
-The two models differ in which portion of Phase III is used to estimate α. The **Conservative model (C)** is anchored at Day 14 (Mar 13), after the rapid IIIa transition has fully settled, and fits only the quasi-flat IIIb period. It finds a very slow decay (α=0.007/day), interpreting the early Phase III decline as a one-off transition rather than a continuing trend. The **Optimistic model (O)** is anchored at Day 11 (Mar 10) and fits the entire Phase III arc from 22 BMs/day down to 6 BMs/day, treating that full decline as a genuine continuing trend (α=0.021/day). Both models are statistically valid — they cannot be distinguished until approximately 3 weeks of April data accumulates.
+The two models differ in which portion of Phase III is used to calibrate α. The **Conservative model (C)** is anchored at Day 14 (Mar 13), corresponding to the slow post-break arm of the best-fit piecewise model (M4). Its α=0.007/day parameter comes from M4's Phase IIIb segment, not from an independent MLE on Days 14–29 alone (an unconstrained fit on that window gives α≈0.013 but the flat model is AIC-preferred there). Model C represents the slow-decay extrapolation of the M4 post-break regime — the upper bound of plausible decay rates. The **Optimistic model (O)** is the MLE of the single Poisson exponential on the full Phase III arc (Days 11–29, from 22 BMs/day down to 6 BMs/day), treating the entire decline as a continuing trend (α=0.021/day). Both models are statistically valid — they cannot be distinguished until approximately 3 weeks of April data accumulates.
+
+> **"Optimistic" refers to the Israeli perspective** — faster Iranian decay is better for Israel. "Conservative" means Iran sustains its capability longer.
 
 **Estimated daily attrition rate:**
 - Model C (Conservative): α = 0.007/day → Israeli strikes destroy ~0.7% of remaining launch capacity daily
@@ -99,11 +103,15 @@ The two models differ in which portion of Phase III is used to estimate α. The 
 - Model C: 99-day half-life → Iran retains ~80% of current launch capacity through end of April
 - Model O: 33-day half-life → Iran retains ~52% of current launch capacity by end of April
 
+**Parameter uncertainty:** With 16–19 Phase III observations, the 95% confidence interval for α spans approximately [0.001, 0.044] day⁻¹ (half-life 16 to several hundred days). Both Model C and Model O lie within this interval — they represent illustrative scenarios within a wide uncertainty envelope, not statistically sharp bounds on the true decay rate.
+
+**Sensitivity of Model O:** Model O's α=0.021 depends substantially on Day 11 (22 BMs, the highest Phase III observation). If that estimate were 15 instead of 22 — within the ±2 chart-reading uncertainty of the source — the implied half-life would increase from 33 to approximately 55 days. The Optimistic model should be interpreted as contingent on the Day 11 estimate being correct.
+
 ### 3.4 The system has deep redundancy
 
-**Evidence:** The Poisson model fits smoothly with no sudden drops, spikes, or regime breaks in Phase III (all 13 7-day back-test windows: |Z| < 1.1).
+**Evidence:** After the IIIa→IIIb structural break at Day 14, the Poisson model fits smoothly with no further sudden drops, spikes, or regime shifts within Phase IIIb (all 13 7-day in-sample windows: |Z| < 1.1).
 
-**Military meaning:** Iran's launch infrastructure is not concentrated. A system with few, large launcher clusters would show sudden step-drops when clusters are destroyed. The smooth exponential decay implies many small, independent nodes distributed geographically — each node's destruction reduces total capacity marginally and smoothly.
+**Military meaning:** A system with few, large launcher clusters would show sudden step-drops when clusters are destroyed. The smooth exponential decline is consistent with many small, independent nodes distributed geographically, each contributing marginally to total capacity. This is the most natural interpretation of the Poisson-exponential pattern, but it cannot be uniquely identified from count data — concentrated infrastructure with sufficient internal redundancy could produce similar statistics.
 
 ---
 
@@ -141,7 +149,7 @@ The decay parameter α directly measures the effectiveness of Israeli strikes ag
 - At α=0.021/day (Model O): Each week of Israeli strikes degrades ~14% of Iran's remaining launch capacity → meaningful cumulative effect over 4–8 weeks
 - At α=0.007/day (Model C): Each week degrades ~5% → slow but sustained erosion
 
-**Key implication:** Israel is not finding and destroying single concentrated launchers — it is applying constant attrition across a distributed network. The effect is real but gradual. There is no evidence of a decisive strike that collapsed capacity suddenly.
+**Key implication:** The smooth exponential decline is inconsistent with single decisive strikes on concentrated high-value launchers — those would produce step-drops, not a smooth curve. The pattern is consistent with gradually accumulated attrition across a distributed network, though operational tempo reduction by choice and logistics degradation are alternative explanations that cannot be excluded from count data alone.
 
 The 92% interception rate (late March, IDF confirmed) means that of ~11 BMs/day launched, only ~0.9 reach their target unintercepted. The damage-limiting value of the Iron Dome/David's Sling system is very high, while the attrition value of Israeli offensive strikes is real but operates on a longer timescale.
 
@@ -155,11 +163,15 @@ The 92% interception rate (late March, IDF confirmed) means that of ~11 BMs/day 
 |-------|-----------|------------|---------------------|
 | **Conservative (C)** | Launcher attrition ~0.7%/day | **~271 BMs** | **~8.5/day** |
 | **Optimistic (O)** | Launcher attrition ~2.1%/day | **~200 BMs** | **~5.1/day** |
-| **Midpoint** | | **~236 BMs** | **~7/day** |
+| **Midpoint** | *(arithmetic blend — not a probability-weighted forecast)* | **~236 BMs** | **~7/day** |
 
 Under either model, Iran retains meaningful BM strike capability throughout April. There is no scenario in the current model where Iran's Phase III rate collapses to near-zero during April.
 
+> **Uncertainty note:** The forecast ranges reflect Poisson sampling variability at fixed model parameters. Parameter estimation uncertainty is substantial — the 95% confidence interval for the decay rate α spans approximately [0.001, 0.044] day⁻¹ (half-life 16–693 days) for both training windows. Both Model C and Model O lie within the same 95% CI; the true forecast uncertainty is wider than the per-model intervals suggest. The two-scenario bracket is the practical way to convey this parameter uncertainty.
+
 ### What would change the picture
+
+**No decay (flat regime):** If the Phase IIIb rate is truly flat (no statistically detectable decay — AIC-preferred on Days 14–29 alone), the April total would be ~330 BMs at ~11.4/day. This is above Model C's 271 and represents the scenario where Israeli attrition is not meaningfully reducing Iran's launch rate during the period observed.
 
 **Accelerating collapse** (both models' Z-scores go below −2):
 - Successful strike on a major missile storage/transfer hub
@@ -187,15 +199,15 @@ Under either model, Iran retains meaningful BM strike capability throughout Apri
 The Phase I saturation campaign ended within 4 days. Iran either chose not to or could not sustain that tempo. Phase III is a fundamentally different mode of warfare — persistent low-rate harassment that imposes continuous costs on Israeli civilian life and air defence system operation without risking total capability collapse.
 
 **2. Iran's BM threat does not collapse easily**
-The distributed, independent, Poisson-statistically-described system is inherently resilient. There is no single point of failure. Destroying any individual node causes a proportional marginal reduction, not a cascade failure.
+The count statistics are consistent with a distributed system that would be inherently resilient to individual strikes. Under the launcher-attrition interpretation, destroying any individual node causes a proportional marginal reduction rather than a cascade failure — though this structural conclusion is an interpretation of the model, not a uniquely proven fact from the data.
 
 **3. The system is self-limiting but slowly**
-At α=0.007–0.021/day, Iran's launch capacity has a half-life of 33–101 days. Absent strategic shocks, Iran retains a meaningful BM threat for weeks to months, not days.
+At α=0.007–0.021/day, Iran's launch capacity has a half-life of 33–99 days. Absent strategic shocks, Iran retains a meaningful BM threat for weeks to months, not days.
 
 **4. Cluster munitions are a capability hedge**
 Increased cluster warhead usage compensates for the declining volume of launches. Even as the number of missiles per day falls, the area-effect damage potential per missile rises. This is evidence of deliberate operational adaptation.
 
-**5. The first month established the equilibrium**
+**5. The first month established an equilibrium**
 Phase I and II were exceptional. Phase III is the steady state. Unless something structurally changes — a decisive Israeli strike campaign against launcher infrastructure, or Iran's strategic decision to escalate — the ~8–12 BMs/day rate is likely to persist through April, declining gradually.
 
 ---
@@ -204,10 +216,10 @@ Phase I and II were exceptional. Phase III is the steady state. Unless something
 
 | Claim | Confidence | Basis |
 |-------|-----------|-------|
-| Poisson distribution in Phase III | **High** | Formal statistical tests; 89% PI coverage |
-| Phase III start ~Mar 10–13 | **High** | AIC minimisation; V/M ratio stabilisation |
-| Exponential decay is real | **Medium** | ΔAIC vs flat model = 1.1; present but not overwhelming |
-| Decay rate α = 0.007–0.021/day | **Medium** | Models statistically tied; 19–24 days to discriminate |
-| Launcher capacity (not stockpile) is binding constraint | **Medium** | Indirect inference from independence structure |
-| April forecast ~200–271 BMs | **Medium** | Conditional on no structural break; model uncertainty is the main risk |
-| No strategic pause or accumulation occurring | **High** | Directly confirmed by autocorrelation test |
+| Poisson distribution in Phase III | **High** | Overdispersion test; NB rejected; 89% in-sample PI coverage |
+| Phase III start ~Mar 13–14 | **Medium** | M4 structural break at Day 14; V/M ≈ 1.0 in IIIb; AIC scan (indicative only — not valid across different n) |
+| Exponential decay is real | **Medium** | ΔAIC vs flat = 1.1 (marginal); flat model cannot be excluded for Phase IIIb alone |
+| Decay rate α = 0.007–0.021/day | **Medium** | Scenario bracket; 95% CI for α spans [0.001, 0.044]; 19–24 April days to discriminate models |
+| Launcher capacity (not stockpile) is binding constraint | **Medium** | Indirect: no negative autocorrelation; masking by replenishment cannot be excluded |
+| April forecast ~200–271 BMs | **Medium** | Conditional on exponential decay continuing; flat-rate scenario gives ~330 BMs |
+| No strategic pause or accumulation occurring | **Medium-High** | Supported by autocorrelation test; test has limited power at n=19 |
