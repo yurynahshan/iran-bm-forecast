@@ -1,349 +1,377 @@
 """
-Iranian Ballistic Missile Strike Model — Phase III NB Stochastic Model
+Iranian Ballistic Missile Strike Model — Phase III Poisson Stochastic Model
 
-L_t ~ NegativeBinomial(mu_t, k)
-mu_t = mu0 * exp(-alpha * (t - t0))
+Two calibrated variants:
 
-Phase III starts Day 8 (Mar 7), model becomes statistically valid ~Mar 18-20.
-t0 is calibrated to the start of the stochastic regime (Mar 8 = Day 9).
+  Model C (Conservative — "Iran sustains"):
+      L_t ~ Poisson(mu_t),  mu_t = 11.75 * exp(-0.007 * (t - 14))
+      Anchored at Day 14 (Mar 13), Phase IIIb quasi-flat component.
+      Half-life: 101 days.
+
+  Model O (Optimistic — "Iran degrades"):
+      L_t ~ Poisson(mu_t),  mu_t = 14.45 * exp(-0.021 * (t - 11))
+      Anchored at Day 11 (Mar 10), full Phase III exponential trend.
+      Half-life: 33 days.
 
 Usage:
-    python nb_model.py               # fit + weekly Z-scores + April forecast
-    python nb_model.py --backtest    # sequential 7-day window backtest
+    python nb_model.py                   # daily Mar29–Apr29 forecast (both models)
+    python nb_model.py --backtest        # Phase III back-test Z-scores
+    python nb_model.py --verify          # observed vs predicted for Phase III
 """
 
 import argparse
+import datetime
 import math
-import warnings
 from pathlib import Path
-
-warnings.filterwarnings("ignore", category=UserWarning)
 
 import numpy as np
 import pandas as pd
-from scipy.stats import nbinom
-from scipy.optimize import minimize
+from scipy.stats import poisson as poisson_dist
 
 DATA_FILE = Path(__file__).parent.parent / "data" / "israel_daily_estimate.csv"
+WAR_START = datetime.date(2026, 2, 28)   # Day 1
 
-# ── default parameters (from methodology doc) ────────────────────────────────
-DEFAULT_MU0 = 5.8
-DEFAULT_ALPHA = 0.03
-DEFAULT_K = 9.0
-PHASE_III_START_DAY = 9  # Day 9 = Mar 8 (first full stochastic day after collapse)
+# ── Model parameters ──────────────────────────────────────────────────────────
 
+MODELS = {
+    "C": {
+        "label": "Conservative (Iran sustains)",
+        "mu0":   11.75,
+        "alpha": 0.007,
+        "t0":    14,          # Day 14 = Mar 13
+        "note":  "Phase IIIb anchor; α=0.007/d; half-life 101d",
+    },
+    "O": {
+        "label": "Optimistic (Iran degrades)",
+        "mu0":   14.45,
+        "alpha": 0.021,
+        "t0":    11,          # Day 11 = Mar 10
+        "note":  "Full Phase III trend; α=0.021/d; half-life 33d",
+    },
+}
 
-# ── data loading ─────────────────────────────────────────────────────────────
-
-def load_data(path: Path = DATA_FILE) -> pd.DataFrame:
-    df = pd.read_csv(path, parse_dates=["date"])
-    df = df.sort_values("day_num").reset_index(drop=True)
-    return df
-
-
-def phase3_rows(df: pd.DataFrame) -> pd.DataFrame:
-    """Rows where bm_il_est is available and day is in Phase III."""
-    p3 = df[df["day_num"] >= PHASE_III_START_DAY].copy()
-    p3 = p3[p3["bm_il_est"].notna()].copy()
-    return p3
-
-
-# ── model ─────────────────────────────────────────────────────────────────────
-
-def mu_t(day_num: float, mu0: float, alpha: float, t0: int = PHASE_III_START_DAY) -> float:
-    """Expected daily missile count on given day_num."""
-    return mu0 * math.exp(-alpha * (day_num - t0))
+PHASE3_START = 11   # first day included in Phase III back-test
 
 
-def nb_mean_var(mu: float, k: float):
-    """NB mean and variance."""
-    return mu, mu + mu**2 / k
+# ── Core math ─────────────────────────────────────────────────────────────────
+
+def day_to_date(day_num: int) -> datetime.date:
+    return WAR_START + datetime.timedelta(days=day_num - 1)
 
 
-def nb_pmf(x: int, mu: float, k: float) -> float:
-    """P(L=x) under NB(mu, k)."""
-    p = k / (k + mu)
-    return nbinom.pmf(x, k, p)
+def mu(day_num: int, model: dict) -> float:
+    return model["mu0"] * math.exp(-model["alpha"] * (day_num - model["t0"]))
 
 
-def nb_logpmf(x: float, mu: float, k: float) -> float:
-    """
-    Log PMF of NB(mu, k) using gamma functions — valid for non-integer k.
-    P(X=x) = Gamma(x+k)/(Gamma(k)*x!) * (k/(k+mu))^k * (mu/(k+mu))^x
-    """
-    x = int(round(x))
-    if mu <= 0 or k <= 0 or x < 0:
-        return -1e12
-    return (
-        math.lgamma(x + k) - math.lgamma(k) - math.lgamma(x + 1)
-        + k * math.log(k / (k + mu))
-        + x * math.log(mu / (k + mu))
-    )
+def pi(day_num: int, model: dict, pct_lo: float = 5, pct_hi: float = 95):
+    """Exact Poisson prediction interval for a single day."""
+    m = mu(day_num, model)
+    lo = int(poisson_dist.ppf(pct_lo / 100, m))
+    hi = int(poisson_dist.ppf(pct_hi / 100, m))
+    return lo, hi
 
 
-def neg_log_likelihood(params, days, obs):
-    """NLL for fitting mu0, alpha, k to observed Phase III data."""
-    mu0, alpha, log_k = params
-    k = math.exp(log_k)
-    if mu0 <= 0 or alpha <= 0 or k <= 0:
-        return 1e12
-    nll = 0.0
-    for d, y in zip(days, obs):
-        mu = mu_t(d, mu0, alpha)
-        if mu <= 0:
-            return 1e12
-        nll -= nb_logpmf(y, mu, k)
-    return nll
+def weekly_stats(day_nums, model, n_sim=100_000):
+    """Expected weekly total + 90/99% PI via Monte Carlo."""
+    rng = np.random.default_rng(42)
+    mus = [mu(d, model) for d in day_nums]
+    E_W = sum(mus)
+    Var_W = sum(mus)           # Poisson: Var = mean
+    sims = sum(rng.poisson(m, n_sim) for m in mus)
+    lo90, hi90 = np.percentile(sims, [5, 95])
+    lo99, hi99 = np.percentile(sims, [0.5, 99.5])
+    return E_W, math.sqrt(Var_W), lo90, hi90, lo99, hi99
 
 
-# ── fitting ──────────────────────────────────────────────────────────────────
-
-def fit_model(df: pd.DataFrame, fit_start_day: int = 20, fixed_k: float = None):
-    """
-    MLE fit of (mu0, alpha[, k]) using Phase III observed/derived rows
-    from fit_start_day onward (default Day 20 = Mar 19, where JINSA direct
-    readings make estimates most reliable).
-
-    If fixed_k is provided, only mu0 and alpha are optimized (k is held fixed).
-    """
-    p3 = phase3_rows(df)
-    fit_rows = p3[p3["day_num"] >= fit_start_day]
-
-    if len(fit_rows) < 4:
-        print(f"  [warn] only {len(fit_rows)} rows for fitting — using doc defaults")
-        return DEFAULT_MU0, DEFAULT_ALPHA, DEFAULT_K
-
-    days = fit_rows["day_num"].values
-    obs = fit_rows["bm_il_est"].values
-
-    if fixed_k is not None:
-        # Only fit mu0 and alpha
-        def nll_fixed_k(params):
-            mu0, alpha = params
-            k = fixed_k
-            if mu0 <= 0 or alpha <= 0:
-                return 1e12
-            return sum(
-                -nb_logpmf(y, mu_t(d, mu0, alpha), k)
-                for d, y in zip(days, obs)
-            )
-        x0 = [DEFAULT_MU0, DEFAULT_ALPHA]
-        bounds = [(0.1, 200), (0.001, 0.5)]
-        res = minimize(nll_fixed_k, x0, method="L-BFGS-B", bounds=bounds)
-        if res.success:
-            mu0_fit, alpha_fit = res.x
-            return mu0_fit, alpha_fit, fixed_k
-        else:
-            print("  [warn] MLE did not converge — using doc defaults")
-            return DEFAULT_MU0, DEFAULT_ALPHA, fixed_k
-
-    x0 = [DEFAULT_MU0, DEFAULT_ALPHA, math.log(DEFAULT_K)]
-    bounds = [(0.1, 200), (0.001, 0.5), (math.log(0.5), math.log(500))]
-
-    res = minimize(
-        neg_log_likelihood,
-        x0,
-        args=(days, obs),
-        method="L-BFGS-B",
-        bounds=bounds,
-    )
-
-    if res.success:
-        mu0_fit, alpha_fit, log_k_fit = res.x
-        return mu0_fit, alpha_fit, math.exp(log_k_fit)
-    else:
-        print("  [warn] MLE did not converge — using doc defaults")
-        return DEFAULT_MU0, DEFAULT_ALPHA, DEFAULT_K
+def zscore_week(day_nums, obs, model):
+    E_W = sum(mu(d, model) for d in day_nums)
+    Var_W = sum(mu(d, model) for d in day_nums)
+    W_obs = float(sum(obs))
+    Z = (W_obs - E_W) / math.sqrt(Var_W)
+    return W_obs, E_W, math.sqrt(Var_W), Z
 
 
-# ── weekly Z-score ────────────────────────────────────────────────────────────
-
-def weekly_zscore(days, obs, mu0, alpha, k, t0=PHASE_III_START_DAY):
-    """
-    Compute Z = (W_obs - E[W]) / sqrt(Var[W]) for a window of days.
-
-    Returns (W_obs, E_W, Var_W, Z).
-    """
-    W_obs = sum(obs)
-    E_W = sum(mu_t(d, mu0, alpha, t0) for d in days)
-    Var_W = sum(
-        mu_t(d, mu0, alpha, t0) + mu_t(d, mu0, alpha, t0) ** 2 / k for d in days
-    )
-    Z = (W_obs - E_W) / math.sqrt(Var_W) if Var_W > 0 else float("nan")
-    return W_obs, E_W, Var_W, Z
-
-
-def zscore_label(z: float) -> str:
+def zscore_label(z):
     az = abs(z)
-    if az < 2:
-        return "✅ STABLE"
-    elif az < 3:
-        return "⚠  MILD DEVIATION"
-    else:
-        return "🚨 MODEL BREAK"
+    if   az < 2: return "STABLE"
+    elif az < 3: return "MILD DEVIATION"
+    else:        return "MODEL BREAK"
 
 
-# ── sequential 7-day backtest ─────────────────────────────────────────────────
+# ── Data loading ──────────────────────────────────────────────────────────────
 
-def backtest(df: pd.DataFrame, mu0: float, alpha: float, k: float):
-    print("\n── Sequential 7-day window backtest ──────────────────────────────────")
-    print(f"  Parameters: mu0={mu0:.3f}  alpha={alpha:.4f}  k={k:.2f}")
-    print()
-    print(f"  {'Window':<22} {'W_obs':>6} {'E[W]':>6} {'σ':>5} {'Z':>6}  Status")
-    print("  " + "-" * 68)
+def load_data():
+    df = pd.read_csv(DATA_FILE, parse_dates=["date"])
+    return df.sort_values("day_num").reset_index(drop=True)
 
-    p3 = phase3_rows(df)
-    days_all = p3["day_num"].values
-    obs_all = p3["bm_il_est"].values
+
+# ── Output sections ───────────────────────────────────────────────────────────
+
+def print_model_summary():
+    print("\n── Model Definitions ─────────────────────────────────────────────────")
+    for key, m in MODELS.items():
+        hl = math.log(2) / m["alpha"]
+        print(f"  Model {key}: {m['label']}")
+        print(f"    mu_t = {m['mu0']:.2f} * exp(-{m['alpha']:.4f} * (t - {m['t0']}))")
+        print(f"    {m['note']}  |  mu(Day30)={mu(30,m):.2f}  mu(Day61)={mu(61,m):.2f}")
+
+
+def print_daily_forecast():
+    """Daily table Day 30 (Mar 29) through Day 61 (Apr 29)."""
+    mc = MODELS["C"]
+    mo = MODELS["O"]
+
+    print("\n── Daily Forecast: Mar 29 – Apr 29 ──────────────────────────────────")
+    print(f"  {'Date':<10} {'Day':>3}  "
+          f"{'── Model C (Conservative) ──':^28}  "
+          f"{'── Model O (Optimistic) ──':^28}")
+    print(f"  {'':10} {'':3}  "
+          f"{'E[L]':>6}  {'90% PI':^12}  {'cumul':>6}  "
+          f"{'E[L]':>6}  {'90% PI':^12}  {'cumul':>6}")
+    print("  " + "─" * 80)
+
+    cumul_c = 0.0
+    cumul_o = 0.0
+    week_c  = 0.0
+    week_o  = 0.0
+    week_days = []
+
+    for day_num in range(30, 62):
+        d = day_to_date(day_num)
+
+        e_c = mu(day_num, mc)
+        e_o = mu(day_num, mo)
+        cumul_c += e_c
+        cumul_o += e_o
+
+        lo_c, hi_c = pi(day_num, mc)
+        lo_o, hi_o = pi(day_num, mo)
+
+        week_c += e_c
+        week_o += e_o
+        week_days.append(day_num)
+
+        # week separator
+        dow = d.weekday()   # 0=Mon … 6=Sun
+
+        print(f"  {d.strftime('%b %d, %a'):<14} {day_num:>3}  "
+              f"{e_c:>6.2f}  [{lo_c:>2}–{hi_c:<2}]  {cumul_c:>8.1f}  "
+              f"{e_o:>6.2f}  [{lo_o:>2}–{hi_o:<2}]  {cumul_o:>8.1f}")
+
+        if dow == 6 or day_num == 61:   # end of week (Sun) or last day
+            # weekly subtotal line
+            wk_lo_c = int(poisson_dist.ppf(0.05, week_c))
+            wk_hi_c = int(poisson_dist.ppf(0.95, week_c))
+            wk_lo_o = int(poisson_dist.ppf(0.05, week_o))
+            wk_hi_o = int(poisson_dist.ppf(0.95, week_o))
+            days_in_week = len(week_days)
+            label = f"  {'─'*3} Week total ({days_in_week}d)"
+            print(f"{label:<29}  "
+                  f"{week_c:>6.1f}  [{wk_lo_c:>2}–{wk_hi_c:<2}]  {'':>8}  "
+                  f"{week_o:>6.1f}  [{wk_lo_o:>2}–{wk_hi_o:<2}]")
+            print()
+            week_c = 0.0
+            week_o = 0.0
+            week_days = []
+
+    print(f"  {'─'*80}")
+    print(f"  {'Total Apr 1–29 (days 33–61)':35}  "
+          f"{sum(mu(d, mc) for d in range(33,62)):>6.1f}{'':>27}"
+          f"{sum(mu(d, mo) for d in range(33,62)):>6.1f}")
+
+
+def print_weekly_summary():
+    mc = MODELS["C"]
+    mo = MODELS["O"]
+
+    print("\n── Weekly Summary ────────────────────────────────────────────────────")
+    print(f"  {'Week':<8} {'Dates':<18}  "
+          f"{'Model C':^28}  {'Model O':^28}")
+    print(f"  {'':8} {'':18}  "
+          f"{'E[W]':>6} {'σ':>4} {'90% PI':^14}  "
+          f"{'E[W]':>6} {'σ':>4} {'90% PI':^14}")
+    print("  " + "─" * 84)
+
+    # Weeks: by calendar week starting Mon Mar 30
+    week_ranges = [
+        ("Week 1", range(30, 37)),   # Mar 29 – Apr 4  (Day 30–36)
+        ("Week 2", range(37, 44)),   # Apr 5–11
+        ("Week 3", range(44, 51)),   # Apr 12–18
+        ("Week 4", range(51, 58)),   # Apr 19–25
+        ("Week 5", range(58, 62)),   # Apr 26–29 (4 days)
+    ]
+
+    for wname, days in week_ranges:
+        day_list = list(days)
+        d0 = day_to_date(day_list[0]).strftime("%b %d")
+        d1 = day_to_date(day_list[-1]).strftime("%b %d")
+        date_str = f"{d0}–{d1}"
+
+        E_c, sig_c, lo90_c, hi90_c, *_ = weekly_stats(day_list, mc)
+        E_o, sig_o, lo90_o, hi90_o, *_ = weekly_stats(day_list, mo)
+
+        print(f"  {wname:<8} {date_str:<18}  "
+              f"{E_c:>6.1f} {sig_c:>4.1f} [{lo90_c:>3}–{hi90_c:<3}]{'':<4}  "
+              f"{E_o:>6.1f} {sig_o:>4.1f} [{lo90_o:>3}–{hi90_o:<3}]")
+
+    # April totals
+    E_c_apr = sum(mu(d, mc) for d in range(33, 62))
+    E_o_apr = sum(mu(d, mo) for d in range(33, 62))
+    _, _, lo_c, hi_c, _, _ = weekly_stats(list(range(33, 62)), mc)
+    _, _, lo_o, hi_o, _, _ = weekly_stats(list(range(33, 62)), mo)
+    print(f"\n  {'April total':<8} {'Apr 1–29':<18}  "
+          f"{E_c_apr:>6.1f}      [{lo_c:>3}–{hi_c:<3}]{'':<4}  "
+          f"{E_o_apr:>6.1f}      [{lo_o:>3}–{hi_o:<3}]")
+
+    # Gap between models
+    gap = E_c_apr - E_o_apr
+    print(f"\n  Model C vs O gap (April total): +{gap:.0f} BMs  "
+          f"(C is {100*gap/E_o_apr:.0f}% higher than O)")
+
+
+def print_backtest(df):
+    print("\n── Phase III Back-test (7-day rolling Z-scores) ─────────────────────")
+    print(f"  {'Window':<20}  {'W_obs':>6}  "
+          f"{'Model C':^20}  {'Model O':^20}")
+    print(f"  {'':20}  {'':6}  "
+          f"{'E[W]':>6} {'Z':>6} {'':8}  "
+          f"{'E[W]':>6} {'Z':>6} {'':8}")
+    print("  " + "─" * 72)
+
+    p3 = df[df["day_num"] >= PHASE3_START].dropna(subset=["isr_bm"])
+    days_all  = p3["day_num"].values
+    obs_all   = p3["isr_bm"].values
     dates_all = p3["date"].dt.strftime("%b%d").values
 
     n = len(days_all)
     for i in range(n - 6):
-        window_days = days_all[i : i + 7]
-        window_obs = obs_all[i : i + 7]
-        W_obs, E_W, Var_W, Z = weekly_zscore(window_days, window_obs, mu0, alpha, k)
-        sigma = math.sqrt(Var_W)
-        start = dates_all[i]
-        end = dates_all[i + 6]
-        label = zscore_label(Z)
-        print(
-            f"  {start}–{end:<12}  {W_obs:>6.0f} {E_W:>6.1f} {sigma:>5.1f} {Z:>+6.2f}  {label}"
-        )
+        wd = days_all[i: i + 7]
+        wo = obs_all[i: i + 7]
+        win = f"{dates_all[i]}–{dates_all[i+6]}"
+
+        W, E_c, sig_c, Z_c = zscore_week(wd, wo, MODELS["C"])
+        _,  E_o, sig_o, Z_o = zscore_week(wd, wo, MODELS["O"])
+
+        lbl_c = zscore_label(Z_c)
+        lbl_o = zscore_label(Z_o)
+
+        print(f"  {win:<20}  {W:>6.0f}  "
+              f"{E_c:>6.1f} {Z_c:>+6.2f} {lbl_c:<10}  "
+              f"{E_o:>6.1f} {Z_o:>+6.2f} {lbl_o:<10}")
 
 
-# ── April 2026 forecast ───────────────────────────────────────────────────────
+def print_verify(df):
+    print("\n── Phase III Verification: Observed vs Both Models ──────────────────")
+    print(f"  {'Date':<10} {'Day':>3} {'Obs':>5}  "
+          f"{'Model C':^22}  {'Model O':^22}")
+    print(f"  {'':10} {'':3} {'':5}  "
+          f"{'E[L]':>6} {'Resid':>7} {'in PI':>6}  "
+          f"{'E[L]':>6} {'Resid':>7} {'in PI':>6}")
+    print("  " + "─" * 70)
 
-def april_forecast(mu0: float, alpha: float, k: float, last_day: int = 29):
-    """Forecast for April 2026 (Days 30–58)."""
-    import datetime
+    p3 = df[df["day_num"] >= PHASE3_START].dropna(subset=["isr_bm"])
+    n_in_c = n_in_o = 0
 
-    print("\n── April 2026 Forecast ────────────────────────────────────────────────")
-    print(f"  Parameters: mu0={mu0:.3f}  alpha={alpha:.4f}  k={k:.2f}")
-    print()
-    print(f"  {'Week':<8} {'Days':<12} {'Dates':<20} {'E[W]':>6} {'σ':>5}  "
-          f"{'90% PI':>14}  {'99% PI':>14}")
-    print("  " + "-" * 80)
-
-    war_start = datetime.date(2026, 2, 28)
-    weeks = [
-        ("Week 1", range(30, 37)),
-        ("Week 2", range(37, 44)),
-        ("Week 3", range(44, 51)),
-        ("Week 4", range(51, 58)),
-    ]
-
-    for week_name, day_range in weeks:
-        day_nums = list(day_range)
-        dates = [war_start + datetime.timedelta(days=d - 1) for d in day_nums]
-        date_str = f"{dates[0].strftime('%b%d')}–{dates[-1].strftime('%b%d')}"
-
-        E_W = sum(mu_t(d, mu0, alpha) for d in day_nums)
-        Var_W = sum(
-            mu_t(d, mu0, alpha) + mu_t(d, mu0, alpha) ** 2 / k for d in day_nums
-        )
-        sigma = math.sqrt(Var_W)
-
-        # Monte Carlo for PI
-        rng = np.random.default_rng(42)
-        sims = np.zeros(20000)
-        for d in day_nums:
-            mu = mu_t(d, mu0, alpha)
-            # Draw Gamma(k, mu/k) then Poisson — gives exact NB(mu, k)
-            lambdas = rng.gamma(shape=k, scale=mu / k, size=20000)
-            sims += rng.poisson(lambdas)
-
-        lo90, hi90 = np.percentile(sims, [5, 95])
-        lo99, hi99 = np.percentile(sims, [0.5, 99.5])
-
-        print(
-            f"  {week_name:<8} Day{day_nums[0]}–{day_nums[-1]:<6}  {date_str:<20} "
-            f"{E_W:>6.1f} {sigma:>5.1f}  "
-            f"[{lo90:.0f}–{hi90:.0f}]{' ':>4}  [{lo99:.0f}–{hi99:.0f}]"
-        )
-
-
-# ── daily diagnostic table ────────────────────────────────────────────────────
-
-def daily_table(df: pd.DataFrame, mu0: float, alpha: float, k: float):
-    print("\n── Phase III Daily Model vs Observed ─────────────────────────────────")
-    print(f"  {'Date':<12} {'Day':>3} {'Obs':>5} {'E[L]':>6} {'Min':>5} {'Max':>5} "
-          f"{'Resid':>6}  {'Data type':<20}")
-    print("  " + "-" * 72)
-
-    p3 = df[df["day_num"] >= PHASE_III_START_DAY].copy()
     for _, row in p3.iterrows():
         d = int(row["day_num"])
-        mu = mu_t(d, mu0, alpha)
-        _, var = nb_mean_var(mu, k)
-        sigma = math.sqrt(var)
-        lo = max(0, round(mu - 1.645 * sigma))
-        hi = round(mu + 1.645 * sigma)
-        obs = row["bm_il_est"]
-        resid = f"{(obs - mu):+.1f}" if pd.notna(obs) else "   n/a"
-        obs_str = f"{obs:5.0f}" if pd.notna(obs) else "   —"
-        dtype = str(row.get("data_type", "")) if pd.notna(row.get("data_type")) else ""
+        obs = row["isr_bm"]
         date_str = row["date"].strftime("%b %d")
-        print(
-            f"  {date_str:<12} {d:>3} {obs_str}  {mu:>6.1f} {lo:>5} {hi:>5} "
-            f"{resid:>6}  {dtype:<20}"
-        )
+
+        e_c = mu(d, MODELS["C"])
+        e_o = mu(d, MODELS["O"])
+        lo_c, hi_c = pi(d, MODELS["C"])
+        lo_o, hi_o = pi(d, MODELS["O"])
+
+        in_c = "✓" if lo_c <= obs <= hi_c else "✗"
+        in_o = "✓" if lo_o <= obs <= hi_o else "✗"
+        if in_c == "✓": n_in_c += 1
+        if in_o == "✓": n_in_o += 1
+
+        print(f"  {date_str:<10} {d:>3} {obs:>5.0f}  "
+              f"{e_c:>6.2f} {obs-e_c:>+7.2f} {in_c:>6}  "
+              f"{e_o:>6.2f} {obs-e_o:>+7.2f} {in_o:>6}")
+
+    n = len(p3)
+    print(f"\n  Coverage (90% PI): Model C = {n_in_c}/{n} ({100*n_in_c/n:.0f}%)  "
+          f"Model O = {n_in_o}/{n} ({100*n_in_o/n:.0f}%)  "
+          f"(expected ~90%)")
 
 
-# ── main ──────────────────────────────────────────────────────────────────────
+# ── Monitoring guide ──────────────────────────────────────────────────────────
+
+def save_predictions(path: Path):
+    rows = []
+    for day_num in range(30, 62):
+        d = day_to_date(day_num)
+        for key, model in MODELS.items():
+            e = mu(day_num, model)
+            lo50, hi50 = pi(day_num, model, 25, 75)
+            lo90, hi90 = pi(day_num, model, 5, 95)
+            rows.append({
+                "date":       d.isoformat(),
+                "day_num":    day_num,
+                "model":      key,
+                "model_label": model["label"],
+                "expected":   round(e, 3),
+                "pi50_lo":    lo50,
+                "pi50_hi":    hi50,
+                "pi90_lo":    lo90,
+                "pi90_hi":    hi90,
+            })
+    df = pd.DataFrame(rows)
+    df.to_csv(path, index=False)
+    print(f"\n  Predictions saved → {path}")
+
+
+def print_monitoring_guide():
+    print("\n── April Monitoring Guide ────────────────────────────────────────────")
+    print("  Each week compute Z_C and Z_O on the actual 7-day total.\n")
+    print(f"  {'Z_C':>7}  {'Z_O':>7}  Signal")
+    print("  " + "─" * 52)
+    rows = [
+        ("−2 to +2", "+2 to +4", "Model C correct — Iran sustaining capacity"),
+        ("−4 to −2", "−2 to +2", "Model O correct — gradual decay confirmed"),
+        ("< −2",     "< −2",     "Both models too high — accelerating collapse"),
+        ("> +2",     "> +4",     "Escalation — structural upward break"),
+    ]
+    for z_c, z_o, signal in rows:
+        print(f"  {z_c:>9}  {z_o:>9}  {signal}")
+    print()
+    print("  Z = (W_obs − E[W]) / √E[W]   (Poisson: σ = √mean)")
+
+
+# ── Main ──────────────────────────────────────────────────────────────────────
 
 def main():
-    parser = argparse.ArgumentParser(description="Iran BM NB stochastic model")
-    parser.add_argument("--backtest", action="store_true", help="Run 7-day backtest")
-    parser.add_argument("--fit-start", type=int, default=20,
-                        help="First day_num used for MLE fitting (default: 20)")
-    parser.add_argument("--mu0", type=float, default=None)
-    parser.add_argument("--alpha", type=float, default=None)
-    parser.add_argument("--k", type=float, default=None,
-                        help="Fix k (dispersion) and fit only mu0+alpha")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--backtest", action="store_true",
+                        help="Show Phase III rolling 7-day Z-scores")
+    parser.add_argument("--verify",   action="store_true",
+                        help="Show observed vs predicted for Phase III")
     args = parser.parse_args()
+
+    print("═" * 70)
+    print("  Iran BM Strike Model  —  Conservative (C) & Optimistic (O)")
+    print("  L_t ~ Poisson(mu0 · exp(−α · (t − t0)))")
+    print("═" * 70)
+
+    print_model_summary()
 
     df = load_data()
 
-    print("═" * 70)
-    print("  Iran BM Stochastic Model  —  L_t ~ NB(mu0·e^(-α·t), k)")
-    print("═" * 70)
-
-    # parameter resolution
-    if args.mu0 and args.alpha and args.k:
-        mu0, alpha, k = args.mu0, args.alpha, args.k
-        print(f"\n  Using user-supplied parameters")
-    elif args.k:
-        print(f"\n  Fitting model with fixed k={args.k} (Day ≥ {args.fit_start})...")
-        mu0, alpha, k = fit_model(df, fit_start_day=args.fit_start, fixed_k=args.k)
-    else:
-        print(f"\n  Fitting model to Phase III data (Day ≥ {args.fit_start})...")
-        mu0, alpha, k = fit_model(df, fit_start_day=args.fit_start)
-
-    print(f"  mu0={mu0:.3f}  alpha={alpha:.4f}  k={k:.2f}")
-    print(f"  Half-life: {math.log(2)/alpha:.1f} days  "
-          f"(mu drops to 50% after this many days in Phase III)")
-
-    # daily table
-    daily_table(df, mu0, alpha, k)
-
-    # most recent complete 7-day window Z-score
-    p3 = phase3_rows(df)
-    if len(p3) >= 7:
-        last7 = p3.tail(7)
-        W_obs, E_W, Var_W, Z = weekly_zscore(
-            last7["day_num"].values, last7["bm_il_est"].values, mu0, alpha, k
-        )
-        sigma = math.sqrt(Var_W)
-        start = last7["date"].iloc[0].strftime("%b %d")
-        end = last7["date"].iloc[-1].strftime("%b %d")
-        print(f"\n── Latest 7-day window ({start}–{end}) ──────────────────────")
-        print(f"  W_obs={W_obs:.0f}  E[W]={E_W:.1f}  σ={sigma:.1f}  Z={Z:+.2f}  "
-              f"{zscore_label(Z)}")
+    if args.verify:
+        print_verify(df)
 
     if args.backtest:
-        backtest(df, mu0, alpha, k)
+        print_backtest(df)
 
-    april_forecast(mu0, alpha, k, last_day=int(p3["day_num"].max()))
+    print_daily_forecast()
+    print_weekly_summary()
+    print_monitoring_guide()
+
+    pred_path = Path(__file__).parent.parent / "predictions" / "predictions.csv"
+    pred_path.parent.mkdir(exist_ok=True)
+    save_predictions(pred_path)
 
 
 if __name__ == "__main__":
