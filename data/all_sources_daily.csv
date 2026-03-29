@@ -1,5 +1,5 @@
-date,day_num,jinsa_bm_global,jinsa_bm_israel,jinsa_bm_uae,jinsa_israel_ceiling,idf_bm_cumul,idf_intercept_pct,alma_waves,alma_waves_cumul,perplexity_min,perplexity_max,perplexity_est,cluster_pct
-2026-02-28,1,438,73,137,301,,,,, 180,220,200,
+date,day_num,jinsa_bm_global,jinsa_bm_israel,jinsa_bm_uae,israel_bm_ceiling,idf_bm_cumul,idf_intercept_pct,alma_waves,alma_waves_cumul,perplexity_min,perplexity_max,perplexity_est,cluster_pct
+2026-02-28,1,438,73,137,301,,,,,180,220,200,
 2026-03-01,2,161,57,28,133,,,55,,90,120,105,
 2026-03-02,3,138,28,9,129,,,16,,60,75,68,
 2026-03-03,4,68,20,7,61,,,10,,30,45,37,

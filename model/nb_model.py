@@ -24,7 +24,7 @@ import pandas as pd
 from scipy.stats import nbinom
 from scipy.optimize import minimize
 
-DATA_FILE = Path(__file__).parent.parent / "data" / "strikes_israel_daily.csv"
+DATA_FILE = Path(__file__).parent.parent / "data" / "israel_daily_estimate.csv"
 
 # ── default parameters (from methodology doc) ────────────────────────────────
 DEFAULT_MU0 = 5.8

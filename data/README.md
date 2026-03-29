@@ -19,7 +19,7 @@ Supporting data from other targets (UAE, Kuwait, Bahrain, Iraq, Saudi Arabia) is
 ```
 data/
 ├── all_sources_daily.csv        ← ALL-SOURCES COMPARISON TABLE (one row per day, one column per source)
-├── strikes_israel_daily.csv     ← CONSOLIDATED MODEL INPUT (clean best-estimate per day)
+├── israel_daily_estimate.csv    ← CONSOLIDATED MODEL INPUT (clean best-estimate per day, with method column)
 ├── inventory.csv                ← Iranian BM/launcher stock snapshots
 ├── conflicts.md                 ← Unresolved source conflicts with resolution paths
 ├── metadata.json                ← Provenance, methodology, update log
@@ -91,7 +91,7 @@ One row per day. Each column comes from a specific source. No synthesised estima
 | `alma_waves` | Daily count of **Iranian attack waves** toward Israel | Alma definition: one "wave" = a grouped launch event. Includes Iranian BMs **and** Iranian UAVs/drones — **not BM-only**. Excludes Hezbollah entirely. Confirmed from Alma's own bar-chart infographics and Statista (which mirrors Alma data). |
 | `alma_waves_cumul` | Cumulative waves since war start | Populated only at confirmed Alma anchor dates: Mar14 (235), Mar19 (300), Mar21 (329), Mar24 (346), Mar26 (377). **Do not recompute by summing daily values** — a confirmed 7-wave discrepancy exists between the Mar21 and Mar24 anchors (see `conflicts.md` CONFLICT-4). |
 
-**Alma waves ≠ BM count.** The Mar18–24 period shows a calibrated ratio of ~1.1 BMs per wave (derived from JINSA Chart 2 ÷ Alma waves for the same days). This ratio is used in `strikes_israel_daily.csv` to estimate BMs on days with no direct JINSA Israel reading.
+**Alma waves ≠ BM count.** The Mar18–24 period shows a calibrated ratio of ~1.1 BMs per wave (derived from JINSA Chart 2 ÷ Alma waves for the same days). This ratio is used in `israel_daily_estimate.csv` to estimate BMs on days with no direct JINSA Israel reading.
 
 ---
 
@@ -139,35 +139,40 @@ Cluster warheads release submunitions over a wide area — a single BM can cause
 
 ---
 
-## `strikes_israel_daily.csv` — Column Reference
+## `israel_daily_estimate.csv` — Column Reference
 
-The consolidated model input. One best estimate per day, no raw source detail.
+The consolidated model input. One best estimate per day with inline notes describing the estimation basis. No raw source detail.
 
 | Column | Description |
 |--------|-------------|
-| `phase` | I = Days 1–4 (saturation); II = Days 5–7 (rapid collapse); III = Day 8+ (stochastic) |
-| `bm_il_min/max` | Plausible range for BMs at Israel |
-| `bm_il_est` | Best single estimate |
-| `bm_il_hits` | Confirmed projectile impacts (all types per JINSA Chart 4; includes drones) |
-| `bm_il_cumul` | Official cumulative anchor at this date (blank most days) |
-| `alma_waves` | Alma daily waves (same as `all_sources_daily.csv`) |
-| `intercept_pct` | Interception rate |
-| `cluster_pct` | Cluster warhead percentage |
-| `data_type` | Epistemic status — see taxonomy below |
-| `confidence` | high / medium / low |
+| `bm_il_est` | Best single estimate for BMs at Israel that day |
+| `bm_il_min` | Lower bound (see estimation methods below) |
+| `bm_il_max` | Upper bound (see estimation methods below) |
+| `alma_waves` | Daily count of Iranian attack waves toward Israel (Alma). One wave = one grouped launch event. Includes Iranian BMs + Iranian UAVs/drones combined; **not BM-only**. Excludes Hezbollah. Used as proxy input via `est = waves × 1.11` (ratio calibrated from JINSA÷Alma Mar18–24). |
+| `bm_il_cumul` | Running cumulative BM total at Israel (computed from `bm_il_est`). Cross-check against official IDF anchors: 128 by Mar4, ~300 by Mar10, >450 by Mar27. |
+| `cluster_pct` | Cluster warhead % (`50` = ~50% confirmed Mar8–10; `>50` = majority confirmed Mar18+; blank = unknown) |
+| `confidence` | `high` / `medium` / `low` — reflects data quality of underlying sources |
 | `primary_source` | Key into `sources/registry.csv` |
-| `flags` | CONFLICT = unresolved source conflict; DATE_DISPUTE = event date uncertain |
+| `notes` | Free-text description of the estimation method and data basis for that day |
+| `flags` | `CONFLICT` = unresolved source conflict (see `conflicts.md`) |
 
-**`data_type` taxonomy:**
+**Estimation methods used (referenced in `notes` column):**
 
-| Value | Meaning |
-|-------|---------|
-| `observed` | Source directly states per-day BM count at Israel |
-| `observed_partial` | Some observed data but incomplete (e.g. minimum from casualties, or hits only) |
-| `derived` | Calculated: `bm_global − UAE − Bahrain − Kuwait − Iraq` |
-| `proxy_est` | Estimated from Alma waves using calibrated BM/wave ratio |
-| `anchor_only` | Only a cumulative total exists; no daily breakdown |
-| `gap` | No data |
+| Method | Days | Formula | Range |
+|--------|------|---------|-------|
+| `bbc_prop` | 1–4 | `est = JINSA_direct × 128/187` | min = JINSA × 115/187; max = JINSA direct |
+| `bbc_residual` | 5 | `est = 128 − Σ(est days 1–4)` | min = est; max = JINSA direct day 5 |
+| `anchor_prop` | 6–10 | `est = 150 × waves_i / Σwaves(6–10)` where 150 = 300−128−22 | min = est×0.80; max = est×1.20; Day 10 floor from FDD observed impact |
+| `wave_ratio` | 12–17 | `est = alma_waves × 1.11` (calibrated Mar18–24) | min = est×0.75; max = est×1.25; observed floor retained where available |
+| `jinsa_direct` | 11, 19–25 | JINSA stated per-country daily count | min = est−2; max = min(est+2, derived_ceiling) |
+| `jinsa_derived` | 26 | `est = JINSA_global − Σ(confirmed non-Israel)` | min = JINSA text lower bound; max = derived ceiling |
+| `media_count` | 28–29 | IDF statement + media siren/barrage count + JINSA global constraint | contextual min/max |
+| `multi_source` | 18, 20, 27 | Weighted blend: JINSA direct w=3, Alma wave_ratio w=2, Perp accepted w=2, Perp accepted_partial w=1. `est = round(Σ(signal×weight)/Σ(weight))`, constrained to [observed_floor, derived_ceiling] | range = [min-of-sources, max-of-sources] ∩ [floor, ceiling] |
+
+**Anchor consistency check (all three IDF anchors satisfied):**
+- Cumul est Days 1–5 = **128** ✓ (BBC/IDF Mar 4 anchor)
+- Cumul est Days 1–11 = **301 ≈ 300** ✓ (IDF Mar 10 anchor)
+- Cumul est Days 1–28 = **501 > 450** ✓ (IDF Mar 27 anchor)
 
 ---
 
