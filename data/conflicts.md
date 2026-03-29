@@ -1,6 +1,6 @@
 # Data Conflicts and Open Questions
 
-Last updated: 2026-03-28
+Last updated: 2026-03-29
 
 Rows in `strikes_israel_daily.csv` with a `CONFLICT` or `DATE_DISPUTE` flag are described here. This file is the single place to track unresolved source contradictions.
 
@@ -8,40 +8,45 @@ Rows in `strikes_israel_daily.csv` with a `CONFLICT` or `DATE_DISPUTE` flag are 
 
 ## CONFLICT-1: Phase I Israel BM Count (Days 1–5, Feb 28–Mar 4)
 
-**Status:** Unresolved — three incompatible readings
+**Status:** Partially resolved — reduced to two incompatible readings (Reading C eliminated)
 
 **The three readings:**
 
-| Reading | Day 1 | Day 2 | Day 3 | Day 4 | Day 5 | 5-day sum | Source |
-|---|---|---|---|---|---|---|---|
-| A (JINSA Mar5 PDF — old) | 73 | 57 | 28 | 20 | 9 | **187** | JINSA_MAR5_PDF (Perplexity R7) |
-| B (BBC/IDF anchor) | — | — | — | — | — | **~128** | BBC_ARABIC citing IDF |
-| C (JINSA Mar5 PDF — new) | 200 | 105 | 68 | 37 | 20 | **430** | JINSA_MAR5_PDF (Perplexity R14) |
+| Reading | Day 1 | Day 2 | Day 3 | Day 4 | Day 5 | 5-day sum | Source | Status |
+|---|---|---|---|---|---|---|---|---|
+| A (JINSA Mar5 PDF) | 73 | 57 | 28 | 20 | 9 | **187** | JINSA_MAR5_PDF (Perplexity R7) | **Confirmed correct column** |
+| B (BBC/IDF anchor) | — | — | — | — | — | **~128** | BBC_ARABIC citing IDF | **Primary source** |
+| C (Perplexity R14 misread) | 200 | 105 | 68 | 37 | 20 | **430** | JINSA_MAR5_PDF (Perplexity R14) | **ELIMINATED — column misread** |
 
-**Why these cannot all be correct:**
-- Readings A and C are both claimed to come from the same JINSA Mar5 PDF "against Israel" column. One must be a misread.
-- Reading C (sum=430 by Mar4) makes the Mar10 cumul=300 anchor physically impossible (you cannot have 430 by Day 5 and only 300 by Day 10).
-- Reading A (sum=187) conflicts with BBC/IDF anchor of 128 — JINSA Mar5 preliminary counts are known to overcount (Day 3: 186→138 global; Day 4: 108→68 global — 35-59% overcount). Israel-specific similarly overcounted.
-- BBC/IDF 128 is a primary source statement, not a chart reading.
+**Reading C eliminated (2026-03-29):** The JINSA Mar5 PDF chart contains two wars side by side:
+- Column 1: "Rising Lion" = **2025 war**, fire against Israel only (Day 2=200, Day 3=105, Day 4=68, Day 5=37)
+- Column 2: "Epic Fury & Roaring Lion: Against Israel" = **2026 war** (Day 1=73, Day 2=57, Day 3=28, Day 4=20, Day 5=9)
+- Column 3: "Epic Fury & Roaring Lion: Total Fire Against All Targets" (Day 1=428, Day 2=170, Day 3=186, Day 4=108, Day 5=42)
 
-**Supporting evidence for higher counts (Reading C direction):**
-- CSIS: "On the first day of the war, Iran launched about 438 ballistic missiles, roughly half against Israel and half at Gulf targets" → ~219 at Israel on Day 1.
-- CAPSS/CHPM cites ">300 MRBMs at Israel by Mar 10." If "MRBMs" is the correct scope for the 300 figure, then total BMs at Israel by Mar10 could be much higher.
-- derived_max on Day 1 = 301 (global 438 - UAE 137). Reading C (200) fits within this constraint.
+Perplexity R14 read the **2025 Rising Lion column** (200/105/68/37) and reported it as 2026 Israel-specific data. This was a table column misread — not new information. Reading C is eliminated.
 
-**Supporting evidence for lower counts (Reading B direction):**
-- BBC Arabic cites IDF/defense ministry directly for the 128 figure — primary attribution.
-- Mar10 cumul=300 from IDF (via JINSA Mar11 PDF) is explicitly "BM launched at Israel." If already 430 by Mar4, the total by Mar10 would be 550+, not 300.
-- Perplexity has a documented history of misreading this specific JINSA PDF (e.g., the 428 global-as-Israel error).
+**Remaining conflict:** JINSA Mar5 PDF "Against Israel" column (187 total) vs BBC/IDF anchor (128 total). These are genuinely incompatible.
+
+**Why 187 is likely overcounted:**
+- The JINSA Mar5 PDF global totals were later revised down significantly in the Mar24 final PDF (Day 3: 186→138, Day 4: 108→68 — 28–37% overcount). The Mar5 PDF was a preliminary and the Israel-specific column likely carries the same overcount bias.
+- The "Total Against All Targets" column in this chart (428/170/186/108/42) differs from our Mar24 final global totals (438/161/138/68/39) — confirming Mar5 is preliminary.
+
+**Supporting evidence for higher counts:**
+- CSIS: "roughly half" of 438 at Israel on Day 1 → ~219. The derived_max=301 (global 438 − UAE 137) is consistent.
+- Note: CSIS may itself be using the Mar5 preliminary data or the 2025 Rising Lion column.
+
+**Supporting evidence for BBC 128:**
+- BBC Arabic cites IDF/defense ministry directly — primary attribution, not a chart reading.
+- Mar10 cumul=300 (IDF): if 187 already by Mar4, the Mar5–10 increment would be only 113 BM — possible but tight.
 
 **Current data treatment:**
-- `strikes_israel_daily.csv` Days 1–5: est = BBC-proportioned values (50/39/19/14/6); max = JINSA Mar5 reading A (73/57/28/20/9).
-- `sources/perplexity/estimates.csv`: Reading C documented with `accepted=contested`.
-- **Do not update primary data until verified against the actual JINSA Mar5 PDF.**
+- `israel_daily_estimate.csv` Days 1–5: est = BBC-proportioned values (50/39/19/14/6); max = JINSA Mar5 column A (73/57/28/20/9).
+- `sources/perplexity/estimates.csv`: Reading C rejection reason updated to `COLUMN_MISREAD_2025_WAR`.
+- **Do not update primary data until the 187 vs 128 conflict is resolved.**
 
-**Resolution path:** Read the JINSA Mar5 PDF directly to determine whether it contains one "Israel" column or two (one labeled "against Israel" and one global). URL: https://jinsa.org/wp-content/uploads/2026/03/Irans-Firepower-2026-03-05-1.pdf
+**Resolution path:** The chart is now confirmed. The remaining question is whether BBC/IDF 128 is a precise count or a rounded/partial figure. If IDF separately stated 90+60+20+20+... as Phase I per-day counts (per IDF/ToI in `sources/idf/statements.csv`), those sum to ~210 — also higher than 128. CONFLICT-3 (scope of BBC 128) is relevant here.
 
-**Additional evidence from R15 (new internal inconsistency):** Perplexity R15 provides both Phase I estimates (200/105/68/37/20 = 430 cumul by Mar4) AND independent Mar5–9 estimates (35+22+40+29+43 = 169), giving a cumulative of 599 by Mar9. Perplexity simultaneously states "anchors put total at ~300 by Mar10." This is a 599 vs 300 contradiction *within the same estimate set*. This indicates Perplexity's Mar5–9 estimates were computed against the BBC 128 anchor (not their own Phase I total of 430) — the two blocks were never cross-checked. This internal inconsistency further undermines confidence in the Phase I Reading C.
+**Additional evidence from R15 (internal inconsistency):** Perplexity R15 Phase I estimates (200/105/68/37/20 = 430) were the 2025 column misread. R15 Mar5–9 estimates (35+22+40+29+43 = 169) were computed against the BBC 128 anchor. The apparent 599 vs 300 contradiction was entirely caused by the column misread — it is no longer relevant now that Reading C is eliminated.
 
 ---
 

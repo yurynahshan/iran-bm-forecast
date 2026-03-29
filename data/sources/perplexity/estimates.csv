@@ -1,10 +1,10 @@
 date,day_num,search_round,period_searched,bm_il_min,bm_il_max,bm_il_est,accepted,rejection_reason,notes
 2026-02-28,1,R14_phase1,Feb28-Mar9,,,428,rejected,GLOBAL_MISREAD,"WRONG: 428 is the global total (all targets), not Israel-specific. Perplexity read the wrong column from JINSA early-war table. Recurring error — also flagged in Round 10."
-2026-02-28,1,R14_phase1_new,Feb28-Mar9,,,200,contested,CONFLICTS_WITH_128_ANCHOR,"NEW READING: Perplexity claims JINSA Mar5 PDF has a separate 'against Israel' column showing 200 on Day 1. CSIS supports 'roughly half' of 438 = ~219 at Israel. BUT conflicts with BBC/IDF 128 cumulative anchor for 5 days, and with earlier Perplexity reading of 73 from same PDF. See conflicts.md."
-2026-03-01,2,R14_phase1_new,Feb28-Mar9,,,105,contested,CONFLICTS_WITH_128_ANCHOR,"See conflicts.md Phase I conflict. Consistent with CSIS narrative but conflicts with 5-day cumul anchor."
-2026-03-02,3,R14_phase1_new,Feb28-Mar9,,,68,contested,CONFLICTS_WITH_128_ANCHOR,See conflicts.md Phase I conflict.
-2026-03-03,4,R14_phase1_new,Feb28-Mar9,,,37,contested,CONFLICTS_WITH_128_ANCHOR,See conflicts.md Phase I conflict.
-2026-03-04,5,R14_phase1_new,Feb28-Mar9,,,20,contested,CONFLICTS_WITH_128_ANCHOR,See conflicts.md Phase I conflict.
+2026-02-28,1,R14_phase1_new,Feb28-Mar9,,,200,rejected,COLUMN_MISREAD_2025_WAR,"ELIMINATED (2026-03-29): Perplexity read the 'Rising Lion' (2025 war) column from the JINSA Mar5 PDF chart instead of the 'Epic Fury: Against Israel' (2026 war) column. The 200/105/68/37 series are 2025 war figures. Correct 2026 Israel column = 73/57/28/20/9. See conflicts.md CONFLICT-1."
+2026-03-01,2,R14_phase1_new,Feb28-Mar9,,,105,rejected,COLUMN_MISREAD_2025_WAR,Same column misread as Day 1 R14. 105 is 2025 Rising Lion data. See conflicts.md CONFLICT-1.
+2026-03-02,3,R14_phase1_new,Feb28-Mar9,,,68,rejected,COLUMN_MISREAD_2025_WAR,Same column misread. 68 is 2025 Rising Lion data.
+2026-03-03,4,R14_phase1_new,Feb28-Mar9,,,37,rejected,COLUMN_MISREAD_2025_WAR,Same column misread. 37 is 2025 Rising Lion data.
+2026-03-04,5,R14_phase1_new,Feb28-Mar9,,,20,rejected,COLUMN_MISREAD_2025_WAR,Same column misread. 20 is 2025 Rising Lion data.
 2026-03-05,6,R14_phase1,Feb28-Mar9,30,40,35,partial,"EST_METHOD_DIFF","Perplexity used 5-day block (Mar5-9, 52 waves), our method uses 6-day block (Mar5-10, 61 waves). Est=35 for 5-day block vs our est=31 for Mar5. Higher because Perplexity excludes Mar10 from block. Both methods self-consistent."
 2026-03-06,7,R14_phase1,Feb28-Mar9,,,,partial,,"Included in Mar5-9 block estimate only; no day-specific figure."
 2026-03-07,8,R14_phase1,Feb28-Mar9,,,,partial,,"Included in Mar5-9 block estimate only; no day-specific figure."
@@ -28,12 +28,12 @@ date,day_num,search_round,period_searched,bm_il_min,bm_il_max,bm_il_est,accepted
 2026-03-25,26,R12_mar2026,Mar20-26,8,12,10,accepted_partial,BELOW_REVISED_EST,"R12 est=10 consistent with JINSA ~10-15/day text. Our revised est=15 (alma_waves=20 spike, ceiling=21) is higher — R12 used Statista wave count of 9, which undercounts. R12 range 8-12 is below revised ceiling."
 2026-03-26,27,R12_mar2026,Mar20-26,8,12,10,accepted,CONFIRMS_PRIMARY,"Consistent with our est=10."
 2026-03-27,28,R11_mar2728,Mar27-28,9,12,10,accepted,CONFIRMS_PRIMARY,"Media siren count: 5-6 distinct barrage cycles. Consistent with JINSA global constraint (max=11). est=10 retained."
-2026-03-28,29,R11_mar2728,Mar27-28,2,4,3,accepted,CONFIRMS_PRIMARY,"Small salvo from IDF confirmed plural missiles. est=3."
-2026-02-28,1,R15_full_war,Feb28-Mar28,180,220,200,contested,CONFLICTS_WITH_128_ANCHOR+INTERNAL_INCONSISTENCY,"Same as R14_phase1_new. CSIS supports 'roughly half of 438' at Israel. Conflicts with BBC/IDF 128 cumulative anchor. ADDITIONALLY: R15 Phase I cumul=430 + R15 Mar5-9 cumul=169 = 599 by Mar9, which contradicts Perplexity's OWN statement 'anchors put total at ~300 by Mar10'. Phase I and Mar5-9 were assembled from different anchor assumptions and never cross-checked internally."
-2026-03-01,2,R15_full_war,Feb28-Mar28,90,120,105,contested,CONFLICTS_WITH_128_ANCHOR+INTERNAL_INCONSISTENCY,Same Phase I conflict as Feb28 R15. See conflicts.md CONFLICT-1.
-2026-03-02,3,R15_full_war,Feb28-Mar28,60,75,68,contested,CONFLICTS_WITH_128_ANCHOR+INTERNAL_INCONSISTENCY,Same Phase I conflict. See conflicts.md CONFLICT-1.
-2026-03-03,4,R15_full_war,Feb28-Mar28,30,45,37,contested,CONFLICTS_WITH_128_ANCHOR+INTERNAL_INCONSISTENCY,Same Phase I conflict. See conflicts.md CONFLICT-1.
-2026-03-04,5,R15_full_war,Feb28-Mar28,15,25,20,contested,CONFLICTS_WITH_128_ANCHOR+INTERNAL_INCONSISTENCY,Same Phase I conflict. See conflicts.md CONFLICT-1.
+2026-03-28,29,R16_mar28_hebrew,Mar28,4,8,6,accepted,HEBREW_MEDIA_CONFIRMS,"4 distinct IDF war-diary launch entries (overnight + 14:08/17:53/18:55/20:59); 1–2 missiles per window; Eshtaol/Beit Shemesh confirmed impact (11–13 injured); Walla/Ynet/Davar/Calcalist corroborate. No source reports dozens. Eilat hit confirmed Houthi — excluded from scope."
+2026-02-28,1,R15_full_war,Feb28-Mar28,180,220,200,rejected,COLUMN_MISREAD_2025_WAR,"ELIMINATED (2026-03-29): R15 Phase I estimates (200/105/68/37/20) are 2025 Rising Lion data read from wrong column of JINSA Mar5 PDF chart. See R14_phase1_new rejection and conflicts.md CONFLICT-1. The apparent 599 vs 300 internal inconsistency was entirely caused by this column misread — not an independent error."
+2026-03-01,2,R15_full_war,Feb28-Mar28,90,120,105,rejected,COLUMN_MISREAD_2025_WAR,Same column misread as Feb28 R15. 105 is 2025 Rising Lion data. See conflicts.md CONFLICT-1.
+2026-03-02,3,R15_full_war,Feb28-Mar28,60,75,68,rejected,COLUMN_MISREAD_2025_WAR,Same column misread. 68 is 2025 Rising Lion data.
+2026-03-03,4,R15_full_war,Feb28-Mar28,30,45,37,rejected,COLUMN_MISREAD_2025_WAR,Same column misread. 37 is 2025 Rising Lion data.
+2026-03-04,5,R15_full_war,Feb28-Mar28,15,25,20,rejected,COLUMN_MISREAD_2025_WAR,Same column misread. 20 is 2025 Rising Lion data.
 2026-03-05,6,R15_full_war,Feb28-Mar28,30,40,35,accepted_partial,INTERNAL_INCONSISTENCY,"R15 range 30-40 largely overlaps our 25-37. BUT: if Phase I=430, Mar5-9 block must be near-zero or negative to reach Mar10 anchor of ~300 — Perplexity's own numbers are inconsistent. R15 Mar5-9 sum=169 was likely computed assuming BBC Phase I anchor (~128), not their own 430."
 2026-03-06,7,R15_full_war,Feb28-Mar28,18,26,22,accepted_partial,INTERNAL_INCONSISTENCY,"R15 range 18-26 overlaps our 16-24. Same internal inconsistency note as Mar5."
 2026-03-07,8,R15_full_war,Feb28-Mar28,35,45,40,accepted_partial,INTERNAL_INCONSISTENCY,"R15 est=40 vs our est=34; ranges overlap. R15 slightly higher — consistent with wave-count (12 waves). Same internal inconsistency note."

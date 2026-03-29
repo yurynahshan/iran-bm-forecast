@@ -151,7 +151,6 @@ The consolidated model input. One best estimate per day with inline notes descri
 | `alma_waves` | Daily count of Iranian attack waves toward Israel (Alma). One wave = one grouped launch event. Includes Iranian BMs + Iranian UAVs/drones combined; **not BM-only**. Excludes Hezbollah. Used as proxy input via `est = waves × 1.11` (ratio calibrated from JINSA÷Alma Mar18–24). |
 | `bm_il_cumul` | Running cumulative BM total at Israel (computed from `bm_il_est`). Cross-check against official IDF anchors: 128 by Mar4, ~300 by Mar10, >450 by Mar27. |
 | `cluster_pct` | Cluster warhead % (`50` = ~50% confirmed Mar8–10; `>50` = majority confirmed Mar18+; blank = unknown) |
-| `confidence` | `high` / `medium` / `low` — reflects data quality of underlying sources |
 | `primary_source` | Key into `sources/registry.csv` |
 | `notes` | Free-text description of the estimation method and data basis for that day |
 | `flags` | `CONFLICT` = unresolved source conflict (see `conflicts.md`) |
@@ -181,7 +180,7 @@ The consolidated model input. One best estimate per day with inline notes descri
 | Date | Value | Source | Scope |
 |------|-------|--------|-------|
 | Mar 4 | ~128 | BBC Arabic citing IDF | 5-day total Feb28–Mar4; possibly includes small non-BM fraction |
-| Mar 10 | ~300 | IDF (via JINSA Mar11 PDF) | BM-only confirmed |
+| Mar 10 | **285** (~300) | IDF precise figure (IAF briefing via Walla/N12); JINSA Mar11 PDF rounds to ~300 | BM-only; 270 intercepted; 17 impact sites; 887 global |
 | Mar 15 | >290 | INSS/FDD | BM-only; non-binding lower bound (already exceeded by Mar10 value) |
 | Mar 27 | >450 | Times of Israel citing IDF | BM at home front |
 
@@ -220,7 +219,7 @@ See `conflicts.md` for full detail. Summary:
 
 | ID | Issue | Status |
 |----|-------|--------|
-| CONFLICT-1 | Phase I Israel BM count: 3 incompatible readings (73/128/200-series) | **Unresolved** — requires reading JINSA Mar5 PDF directly |
+| CONFLICT-1 | Phase I Israel BM count: JINSA Mar5 PDF = 187 (73/57/28/20/9) vs BBC/IDF anchor = 128 | **Partially resolved** — 200-series eliminated (2025 war column misread); 187 vs 128 remains open |
 | CONFLICT-2 | Hebron fatal hit date: Mar17 vs Mar23 | **Resolved** — confirmed Mar17 (R15 co-citation with Alma Mar17 report) |
 | CONFLICT-3 | BBC ~128 scope: all-BM vs MRBM-only | **Open question** |
 | CONFLICT-4 | Alma 7-wave discrepancy Mar21→Mar24 | **Accepted as real** — use stated anchors only |

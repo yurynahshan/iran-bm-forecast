@@ -1,30 +1,30 @@
-date,day_num,bm_il_est,bm_il_min,bm_il_max,alma_waves,bm_il_cumul,cluster_pct,confidence,primary_source,notes,flags
-2026-02-28,1,50,45,73,44,50,,medium,JINSA_MAR5_PDF,JINSA Mar5 PDF direct Israel count (73) scaled ×128/187 (BBC/IDF 5-day anchor); 3-way source conflict unresolved,CONFLICT
-2026-03-01,2,39,35,57,55,89,,medium,JINSA_MAR5_PDF,JINSA Mar5 PDF direct Israel count (57) scaled ×128/187; source conflict unresolved,CONFLICT
-2026-03-02,3,19,17,28,16,108,,medium,JINSA_MAR5_PDF,JINSA Mar5 PDF direct Israel count (28) scaled ×128/187; source conflict unresolved,CONFLICT
-2026-03-03,4,14,12,20,10,122,,medium,JINSA_MAR5_PDF,JINSA Mar5 PDF direct Israel count (20) scaled ×128/187; source conflict unresolved,CONFLICT
-2026-03-04,5,6,6,9,10,128,,medium,BBC_ARABIC,Residual from BBC/IDF 128 5-day anchor minus Days 1–4 estimates; source conflict unresolved,CONFLICT
-2026-03-05,6,32,26,38,11,160,,low,ALMA,Alma waves proportioned to 150-BM budget for Days 6–10 (300−128−22=150; Σwaves=52); est=150×11/52,
-2026-03-06,7,20,16,24,7,180,,low,ALMA,Alma waves proportioned to 150-BM budget for Days 6–10; est=150×7/52,
-2026-03-07,8,35,28,42,12,215,,low,ALMA,Alma waves proportioned to 150-BM budget for Days 6–10; est=150×12/52,
-2026-03-08,9,26,21,31,9,241,50,low,ALMA,Alma waves proportioned to 150-BM budget for Days 6–10; est=150×9/52; ~50% cluster warheads,
-2026-03-09,10,38,2,43,13,279,50,low,FDD,Alma waves proportioned (150×13/52=38); FDD floor confirms ≥2 BMs; range floor=2 from observed impact,
-2026-03-10,11,22,20,22,9,301,50,medium,JINSA_MAR11_PDF,JINSA Mar11 PDF direct Israel count (22) ±2 (chart precision); IDF ~300 cumulative anchor confirmed,
-2026-03-11,12,12,9,15,11,313,,low,ALMA,Alma 11 waves × 1.11 (BM/wave ratio calibrated from JINSA÷Alma Mar18–24) ±25%,
-2026-03-12,13,11,8,14,10,324,,low,ALMA,Alma 10 waves × 1.11 ±25%,
-2026-03-13,14,12,9,15,11,336,,low,ALMA,Alma 11 waves × 1.11 ±25%,
-2026-03-14,15,8,6,10,7,344,,low,ALMA,Alma 7 waves × 1.11 ±25%,
-2026-03-15,16,11,8,14,10,355,,medium,INSS,Alma 10 waves × 1.11; INSS >290 cumulative lower bound consistent with estimate,
-2026-03-16,17,13,10,16,12,368,,low,ALMA,Alma 12 waves × 1.11 ±25%,
-2026-03-17,18,11,2,15,11,379,,low,WIKI_HE,Alma 11 waves×1.11=12 (w=2) blended with Perplexity accepted_partial est=9 (w=1) → 11; floor=2 from confirmed casualties,
-2026-03-18,19,15,13,17,13,394,>50,medium,JINSA_MAR24_PDF,JINSA Mar24 PDF Chart 2 direct Israel count (15) ±2; confirmed by Perplexity R15,
-2026-03-19,20,19,16,21,19,413,>50,medium,JINSA_MAR24_PDF,JINSA Chart 2 direct (18; w=3) + Alma 19 waves×1.11=21 (w=2) + Perplexity accepted=18 (w=2) → 19; max extended to Alma ceiling,
-2026-03-20,21,12,10,14,13,425,>50,medium,JINSA_MAR24_PDF,JINSA Mar24 PDF Chart 2 direct Israel count (12) ±2; Perplexity accepted_partial=10 consistent,
-2026-03-21,22,8,6,10,8,433,>50,medium,JINSA_MAR24_PDF,JINSA Mar24 PDF Chart 2 direct (8) ±2; Perplexity rejected (casualty inference error — cluster munitions explain mass casualties),
-2026-03-22,23,13,11,15,8,446,>50,medium,JINSA_MAR24_PDF,JINSA Mar24 PDF Chart 2 direct (13) ±2; Perplexity rejected (chart reading conflict — Perp=10 < JINSA=13),
-2026-03-23,24,8,6,10,7,454,>50,medium,JINSA_MAR24_PDF,JINSA Mar24 PDF Chart 2 direct (8) ±2; Perplexity rejected (wrong proxy — used all-type share as BM proxy),
-2026-03-24,25,10,8,11,9,464,>50,medium,JINSA_MAR24_PDF,JINSA Mar24 PDF Chart 2 direct (~10) capped at derived ceiling=11; Perplexity accepted_partial=12 exceeds ceiling,
-2026-03-25,26,15,10,21,20,479,>50,medium,JINSA_MAR25_PDF,JINSA global (26) minus confirmed non-Israel; Alma 20 waves (derived from anchor math: 377−346−11); ceiling=21,
-2026-03-26,27,12,8,16,11,491,>50,medium,JINSA,Alma 11 waves×1.11=12 (w=2) + Perplexity accepted=11 (w=2) → 12; no JINSA direct; derived ceiling=16,
-2026-03-27,28,10,9,11,,501,>50,medium,IDF,IDF confirmed BM salvo at home front (~5–6 distinct barrage cycles in media); JINSA global=21; IDF >450 cumulative anchor,
-2026-03-28,29,3,2,4,,504,>50,low,IDF_LIVE,IDF confirmed small salvo (plural BMs); Perplexity contested at est=6 (includes Houthi Eilat missile excluded from scope),
+date,day_num,isr_bm,bm_il_min,bm_il_max,alma_waves,bm_il_cumul,cluster_pct,primary_source,notes,flags
+2026-02-28,1,50,45,73,44,50,,JINSA_MAR5_PDF,JINSA Mar5 PDF direct Israel count (73) scaled ×128/187 (BBC/IDF 5-day anchor); 3-way source conflict unresolved,CONFLICT
+2026-03-01,2,39,35,57,55,89,,JINSA_MAR5_PDF,JINSA Mar5 PDF direct Israel count (57) scaled ×128/187; source conflict unresolved,CONFLICT
+2026-03-02,3,19,17,28,16,108,,JINSA_MAR5_PDF,JINSA Mar5 PDF direct Israel count (28) scaled ×128/187; source conflict unresolved,CONFLICT
+2026-03-03,4,14,12,20,10,122,,JINSA_MAR5_PDF,JINSA Mar5 PDF direct Israel count (20) scaled ×128/187; source conflict unresolved,CONFLICT
+2026-03-04,5,6,6,9,10,128,,BBC_ARABIC,Residual from BBC/IDF 128 5-day anchor minus Days 1–4 estimates; source conflict unresolved,CONFLICT
+2026-03-05,6,32,30,38,11,160,,ALMA,Alma waves proportioned to 150-BM budget for Days 6–10 (300−128−22=150; Σwaves=52); est=150×11/52,
+2026-03-06,7,20,18,24,7,180,,ALMA,Alma waves proportioned to 150-BM budget for Days 6–10; est=150×7/52,
+2026-03-07,8,35,35,42,12,215,,ALMA,Alma waves proportioned to 150-BM budget for Days 6–10; est=150×12/52,
+2026-03-08,9,26,24,31,9,241,50,ALMA,Alma waves proportioned to 150-BM budget for Days 6–10; est=150×9/52; ~50% cluster warheads,
+2026-03-09,10,38,38,43,13,279,50,FDD,Alma waves proportioned (150×13/52=38); FDD floor confirms ≥2 BMs; range floor=2 from observed impact,
+2026-03-10,11,22,20,22,9,301,50,JINSA_MAR11_PDF,JINSA Mar11 PDF direct Israel count (22) ±2 (chart precision); IDF ~300 cumulative anchor confirmed,
+2026-03-11,12,12,9,15,11,313,,ALMA,Alma 11 waves × 1.11 (BM/wave ratio calibrated from JINSA÷Alma Mar18–24) ±25%,
+2026-03-12,13,11,8,14,10,324,,ALMA,Alma 10 waves × 1.11 ±25%,
+2026-03-13,14,12,9,15,11,336,,ALMA,Alma 11 waves × 1.11 ±25%,
+2026-03-14,15,8,6,10,7,344,,ALMA,Alma 7 waves × 1.11 ±25%,
+2026-03-15,16,11,8,14,10,355,,INSS,Alma 10 waves × 1.11; INSS >290 cumulative lower bound consistent with estimate,
+2026-03-16,17,13,10,16,12,368,,ALMA,Alma 12 waves × 1.11 ±25%,
+2026-03-17,18,11,6,15,11,379,,WIKI_HE,Alma 11 waves×1.11=12 (w=2) blended with Perplexity accepted_partial est=9 (w=1) → 11; floor=2 from confirmed casualties,
+2026-03-18,19,15,13,17,13,394,>50,JINSA_MAR24_PDF,JINSA Mar24 PDF Chart 2 direct Israel count (15) ±2; confirmed by Perplexity R15,
+2026-03-19,20,19,16,21,19,413,>50,JINSA_MAR24_PDF,JINSA Chart 2 direct (18; w=3) + Alma 19 waves×1.11=21 (w=2) + Perplexity accepted=18 (w=2) → 19; max extended to Alma ceiling,
+2026-03-20,21,12,10,14,13,425,>50,JINSA_MAR24_PDF,JINSA Mar24 PDF Chart 2 direct Israel count (12) ±2; Perplexity accepted_partial=10 consistent,
+2026-03-21,22,8,6,10,8,433,>50,JINSA_MAR24_PDF,JINSA Mar24 PDF Chart 2 direct (8) ±2; Perplexity rejected (casualty inference error — cluster munitions explain mass casualties),
+2026-03-22,23,13,11,15,8,446,>50,JINSA_MAR24_PDF,JINSA Mar24 PDF Chart 2 direct (13) ±2; Perplexity rejected (chart reading conflict — Perp=10 < JINSA=13),
+2026-03-23,24,8,6,10,7,454,>50,JINSA_MAR24_PDF,JINSA Mar24 PDF Chart 2 direct (8) ±2; Perplexity rejected (wrong proxy — used all-type share as BM proxy),
+2026-03-24,25,10,10,11,9,464,>50,JINSA_MAR24_PDF,JINSA Mar24 PDF Chart 2 direct (~10) capped at derived ceiling=11; Perplexity accepted_partial=12 exceeds ceiling,
+2026-03-25,26,15,10,21,20,479,>50,JINSA_MAR25_PDF,JINSA global (26) minus confirmed non-Israel; Alma 20 waves (derived from anchor math: 377−346−11); ceiling=21,
+2026-03-26,27,12,8,16,11,491,>50,JINSA,Alma 11 waves×1.11=12 (w=2) + Perplexity accepted=11 (w=2) → 12; no JINSA direct; derived ceiling=16,
+2026-03-27,28,10,9,11,,501,>50,IDF,IDF confirmed BM salvo at home front (~5–6 distinct barrage cycles in media); JINSA global=21; IDF >450 cumulative anchor,
+2026-03-28,29,6,4,8,,507,>50,IDF_HE,4 distinct Iranian launch windows (overnight + 14:08/17:53/18:55/20:59 IDF war diary); 1–2 missiles per window; confirmed Eshtaol/Beit Shemesh impact (11–13 lightly injured); remaining intercepted or open areas. Sources: IDF war diary [2] + Walla [1] + Ynet/Davar [5][8],
