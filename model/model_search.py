@@ -3,7 +3,7 @@ Model Search Framework — Physical Launcher Constraint Grid Search
 =================================================================
 
 Explores the (N_launchers, avg_fires_per_launcher) parameter space,
-evaluates each candidate on Phase IIIb data, and reports fit / stability
+evaluates each candidate on Attrition phase data, and reports fit / stability
 metrics to support model selection.
 
 Physical constraint:
@@ -41,8 +41,8 @@ warnings.filterwarnings("ignore")
 DATA_FILE  = Path(__file__).parent.parent / "data" / "israel_daily_estimate.csv"
 INTEL_FILE = Path(__file__).parent.parent / "data" / "launcher_intel.csv"
 
-PHASE3B_START = 14   # Phase IIIb stable regime start
-PHASE3_START  = 11   # Phase III (including IIIa transition)
+PHASE3B_START = 14   # Phase IIIb (Attrition) stable regime start
+PHASE3_START  = 11   # Phase IIIa (Transition) start
 
 
 # ── Data ──────────────────────────────────────────────────────────────────────
@@ -158,7 +158,7 @@ def zscore_window(days_w, obs_w, alpha, mu0, t0):
 
 def backtest_max_z(alpha: float, mu0: float, days: np.ndarray, obs: np.ndarray,
                    t0: int) -> tuple[float, int]:
-    """Max |Z| and number of STABLE windows across rolling 7-day Phase III windows."""
+    """Max |Z| and number of STABLE windows across rolling 7-day Attrition phase windows."""
     p3_days, p3_obs = load_phase3()
     n = len(p3_days)
     max_z = 0.0
@@ -388,7 +388,7 @@ def print_recommendation(results: list[dict], aic_min: float, intel: dict = None
     note_c = "intelligence-grounded" if best_c in intel_valid else "statistical best"
     pairs = [
         ("Conservative (C) — Iran sustains:", best_c, note_c),
-        ("Optimistic   (O) — Iran degrades:", best_o, "fastest valid decay"),
+        ("Observable   (O) — Iran degrades:", best_o, "fastest valid decay"),
     ]
     for label, r, note in pairs:
         print(f"\n  {label}  [{note}]")
@@ -413,7 +413,7 @@ def main():
 
     print("═" * 140)
     print("  Model Search Framework — Physical Launcher Constraint Grid")
-    print(f"  Data: Phase IIIb Days 14–29 (n={len(days)}, Σ={int(obs.sum())} BMs)")
+    print(f"  Data: Attrition phase Days 14–29 (n={len(days)}, Σ={int(obs.sum())} BMs)")
     print(f"  Physical constraint: alpha = mu0 / (N_launchers × avg_fires)")
     print("═" * 140)
 

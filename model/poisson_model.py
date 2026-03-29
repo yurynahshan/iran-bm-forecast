@@ -1,8 +1,8 @@
 """
-Iranian Ballistic Missile Strike Model — Phase III Poisson Stochastic Model
+Iranian Ballistic Missile Strike Model — Attrition Phase Poisson Stochastic Model
 
 Design principle (decoupled calibration):
-  - PROCESS STRUCTURE (Poisson):  calibrated from Phase IIIb launch data.
+  - PROCESS STRUCTURE (Poisson):  calibrated from Phase IIIb (Attrition) launch data, Days 14–29.
       The Poisson assumption captures the distributed, autonomous nature of
       Iranian missile-unit operations. Each unit fires independently without
       central coordination.
@@ -10,7 +10,7 @@ Design principle (decoupled calibration):
       Iranian launcher attrition, NOT fitted to strike data. This decouples
       the decay estimate from observation noise and makes forecasts stable.
 
-Two variants anchored at Phase IIIb start (t0 = Day 14 = Mar 13):
+Two variants anchored at Phase IIIb (Attrition) start (t0 = Day 14 = Mar 13):
 
   Model C (Conservative — "Iran sustains"):
       alpha_C = 0.0083/day — directly derived from launcher count intelligence:
@@ -20,7 +20,7 @@ Two variants anchored at Phase IIIb start (t0 = Day 14 = Mar 13):
       mu0_C = 12.43 — closed-form MLE with alpha_C fixed (Days 14-29 data)
       L_t ~ Poisson(mu_t),  mu_t = 12.43 * exp(-0.0083 * (t - 14))
 
-  Model O (Optimistic — "Iran degrades"):
+  Model O (Observable — "Iran degrades"):
       alpha_O = 0.020/day — 2.5× faster than Model C, representing scenario
           where Israel specifically prioritizes destruction of Iran's
           Israel-facing launcher assets (IDF reported >80% of Israel-facing
@@ -34,8 +34,8 @@ a ±4 BM change in any single observation shifts the April forecast by only
 
 Usage:
     python poisson_model.py                   # daily Mar29–Apr29 forecast (both models)
-    python poisson_model.py --backtest        # Phase III back-test Z-scores
-    python poisson_model.py --verify          # observed vs predicted for Phase III
+    python poisson_model.py --backtest        # Attrition phase back-test Z-scores
+    python poisson_model.py --verify          # observed vs predicted for Attrition phase
 """
 
 import argparse
@@ -57,19 +57,19 @@ MODELS = {
         "label": "Conservative (Iran sustains)",
         "mu0":   12.43,
         "alpha": 0.0083,
-        "t0":    14,          # Day 14 = Mar 13 (Phase IIIb start)
+        "t0":    14,          # Day 14 = Mar 13 (Phase IIIb / Attrition start)
         "note":  "Intel-derived: 160→140 launchers Day12→28; α=0.0083/d; HL=83d",
     },
     "O": {
-        "label": "Optimistic (Iran degrades)",
+        "label": "Observable (Iran degrades)",
         "mu0":   13.52,
         "alpha": 0.020,
-        "t0":    14,          # Day 14 = Mar 13 (Phase IIIb start)
+        "t0":    14,          # Day 14 = Mar 13 (Phase IIIb / Attrition start)
         "note":  "Intel-derived: 2.5× faster (priority targeting); α=0.020/d; HL=35d",
     },
 }
 
-PHASE3_START = 11   # first day included in Phase III back-test
+PHASE3_START = 11   # first day included in back-test (includes Transition phase)
 
 
 # ── Core math ─────────────────────────────────────────────────────────────────
@@ -143,7 +143,7 @@ def print_daily_forecast():
     print("\n── Daily Forecast: Mar 29 – Apr 29 ──────────────────────────────────")
     print(f"  {'Date':<10} {'Day':>3}  "
           f"{'── Model C (Conservative) ──':^28}  "
-          f"{'── Model O (Optimistic) ──':^28}")
+          f"{'── Model O (Observable) ──':^28}")
     print(f"  {'':10} {'':3}  "
           f"{'E[L]':>6}  {'90% PI':^12}  {'cumul':>6}  "
           f"{'E[L]':>6}  {'90% PI':^12}  {'cumul':>6}")
@@ -249,7 +249,7 @@ def print_weekly_summary():
 
 
 def print_backtest(df):
-    print("\n── Phase III Back-test (7-day rolling Z-scores) ─────────────────────")
+    print("\n── Attrition Phase Back-test (7-day rolling Z-scores) ───────────────")
     print(f"  {'Window':<20}  {'W_obs':>6}  "
           f"{'Model C':^20}  {'Model O':^20}")
     print(f"  {'':20}  {'':6}  "
@@ -280,7 +280,7 @@ def print_backtest(df):
 
 
 def print_verify(df):
-    print("\n── Phase III Verification: Observed vs Both Models ──────────────────")
+    print("\n── Attrition Phase Verification: Observed vs Both Models ────────────")
     print(f"  {'Date':<10} {'Day':>3} {'Obs':>5}  "
           f"{'Model C':^22}  {'Model O':^22}")
     print(f"  {'':10} {'':3} {'':5}  "
@@ -364,13 +364,13 @@ def print_monitoring_guide():
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--backtest", action="store_true",
-                        help="Show Phase III rolling 7-day Z-scores")
+                        help="Show Attrition phase rolling 7-day Z-scores")
     parser.add_argument("--verify",   action="store_true",
-                        help="Show observed vs predicted for Phase III")
+                        help="Show observed vs predicted for Attrition phase")
     args = parser.parse_args()
 
     print("═" * 70)
-    print("  Iran BM Strike Model  —  Conservative (C) & Optimistic (O)")
+    print("  Iran BM Strike Model  —  Conservative (C) & Observable (O)")
     print("  L_t ~ Poisson(mu0 · exp(−α · (t − t0)))")
     print("═" * 70)
 

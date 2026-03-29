@@ -32,7 +32,7 @@ from scipy.optimize import minimize
 from scipy.stats import chi2 as chi2_dist
 
 DATA_FILE = Path(__file__).parent.parent / "data" / "israel_daily_estimate.csv"
-PHASE3_START = 11   # Day 11 = Mar 10 (IDF ~300 cumulative anchor; natural Phase II→III boundary)
+PHASE3_START = 11   # Day 11 = Mar 10 (IDF ~300 cumulative anchor; Phase II→IIIa boundary)
 
 
 # ── data ──────────────────────────────────────────────────────────────────────
@@ -41,7 +41,7 @@ def load_phase3():
     df = pd.read_csv(DATA_FILE, parse_dates=["date"])
     df = df.sort_values("day_num").reset_index(drop=True)
     p3 = df[df["day_num"] >= PHASE3_START].dropna(subset=["isr_bm"]).copy()
-    p3["t"] = p3["day_num"] - PHASE3_START   # t=0 at Phase III start
+    p3["t"] = p3["day_num"] - PHASE3_START   # t=0 at Phase IIIa start
     return p3
 
 
@@ -361,7 +361,7 @@ def main():
 
     print("═" * 72)
     print("  Iran BM Model Diagnostics & Model Selection")
-    print(f"  Phase III data: {dates[0]} – {dates[-1]}  (n={n} days)")
+    print(f"  Phase IIIa+IIIb data: {dates[0]} – {dates[-1]}  (n={n} days)")
     print("═" * 72)
 
     # ── Rolling mean (trend visualisation) ────────────────────────────────────
@@ -467,9 +467,9 @@ def main():
     # ── Structural break detail ────────────────────────────────────────────────
     print(f"\n── Structural Break Analysis ─────────────────────────────────────────")
     print(f"  Best piecewise Poisson (M4): break at Day {m4['break_day']}")
-    print(f"    Phase IIIa: α1={m4['alpha1']:.4f}/day  "
+    print(f"    Phase IIIa (Transition): α1={m4['alpha1']:.4f}/day  "
           f"half-life={math.log(2)/m4['alpha1']:.1f} days")
-    print(f"    Phase IIIb: α2={m4['alpha2']:.4f}/day  "
+    print(f"    Phase IIIb (Attrition): α2={m4['alpha2']:.4f}/day  "
           f"half-life={math.log(2)/m4['alpha2']:.1f} days")
     print(f"    ΔAIC vs M1 (single decay): {m4['aic'] - m1['aic']:+.2f}")
     if m4["aic"] < m1["aic"] - 2:
@@ -480,9 +480,9 @@ def main():
         print("    → Structural break not supported (single decay better)")
 
     print(f"\n  Best piecewise NB (M5): break at Day {m5['break_day']}")
-    print(f"    Phase IIIa: α1={m5['alpha1']:.4f}/day  "
+    print(f"    Phase IIIa (Transition): α1={m5['alpha1']:.4f}/day  "
           f"half-life={math.log(2)/m5['alpha1']:.1f} days")
-    print(f"    Phase IIIb: α2={m5['alpha2']:.4f}/day  "
+    print(f"    Phase IIIb (Attrition): α2={m5['alpha2']:.4f}/day  "
           f"half-life={math.log(2)/m5['alpha2']:.1f} days")
     print(f"    k={m5['k']:.1f}   ΔAIC vs M3 (single NB decay): {m5['aic'] - m3['aic']:+.2f}")
 
