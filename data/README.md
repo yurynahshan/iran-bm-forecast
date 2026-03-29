@@ -149,7 +149,7 @@ The consolidated model input. One best estimate per day with inline notes descri
 | `bm_il_min` | Lower bound (see estimation methods below) |
 | `bm_il_max` | Upper bound (see estimation methods below) |
 | `alma_waves` | Daily count of Iranian attack waves toward Israel (Alma). One wave = one grouped launch event. Includes Iranian BMs + Iranian UAVs/drones combined; **not BM-only**. Excludes Hezbollah. Used as proxy input via `est = waves × 1.11` (ratio calibrated from JINSA÷Alma Mar18–24). |
-| `bm_il_cumul` | Running cumulative BM total at Israel (computed from `bm_il_est`). Cross-check against official IDF anchors: 128 by Mar4, ~300 by Mar10, >450 by Mar27. |
+| `isr_cumul` | Running cumulative BM total at Israel (computed from `isr_bm`). Cross-check against official IDF anchors: 128 by Mar4, ~300 by Mar10, >450 by Mar27. |
 | `cluster_pct` | Cluster warhead % (`50` = ~50% confirmed Mar8–10; `>50` = majority confirmed Mar18+; blank = unknown) |
 | `primary_source` | Key into `sources/registry.csv` |
 | `notes` | Free-text description of the estimation method and data basis for that day |

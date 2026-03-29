@@ -1,5 +1,5 @@
-date,day_num,isr_bm,bm_il_min,bm_il_max,alma_waves,bm_il_cumul,cluster_pct,primary_source,notes,flags
-2026-02-28,1,50,45,73,44,50,,JINSA_MAR5_PDF,JINSA Mar5 PDF direct Israel count (73) scaled ×128/187 (BBC/IDF 5-day anchor); 3-way source conflict unresolved,CONFLICT
+date,day_num,isr_bm,bm_il_min,bm_il_max,alma_waves,isr_cumul,cluster_pct,primary_source,notes,flags
+2026-02-28,1,50,45,73,44,50,,JINSA_MAR5_PDF,JINSA Mar5 PDF direct Israel count (73) scaled ×128/187 (BBC/IDF 5-day anchor); conflict: JINSA 187 vs BBC/IDF 128,CONFLICT
 2026-03-01,2,39,35,57,55,89,,JINSA_MAR5_PDF,JINSA Mar5 PDF direct Israel count (57) scaled ×128/187; source conflict unresolved,CONFLICT
 2026-03-02,3,19,17,28,16,108,,JINSA_MAR5_PDF,JINSA Mar5 PDF direct Israel count (28) scaled ×128/187; source conflict unresolved,CONFLICT
 2026-03-03,4,14,12,20,10,122,,JINSA_MAR5_PDF,JINSA Mar5 PDF direct Israel count (20) scaled ×128/187; source conflict unresolved,CONFLICT

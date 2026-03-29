@@ -101,6 +101,4 @@ A second ToI article (https://www.timesofisrael.com/deadly-missile-strike-in-wes
 | Flag | Meaning | Affected rows |
 |---|---|---|
 | `CONFLICT` | Unresolved source conflict for this day's estimate | Days 1–5 (Phase I) |
-| `DATE_DISPUTE` | Event date uncertain across sources | Mar 17, Mar 23 |
-| `PARTIAL` | Data is partial or incomplete | (used in data_type column, not flags) |
-| `PERP_WARN` | (reserved — not yet used in consolidated table; see perplexity/estimates.csv for rejected estimates) | — |
+| ~~`DATE_DISPUTE`~~ | ~~Event date uncertain across sources~~ | **Resolved** — CONFLICT-2 (Hebron date) confirmed Mar17. Flag removed from all rows. |

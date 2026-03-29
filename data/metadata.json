@@ -1,6 +1,6 @@
 {
   "project": "Iran Missile Strike Analysis",
-  "metadata_updated": "2026-03-28",
+  "metadata_updated": "2026-03-29",
   "data_scope": {
     "include": "Iranian ballistic missiles (BM) targeting Israel only",
     "exclude": [
@@ -13,7 +13,7 @@
     "note_on_alma_waves": "alma_waves_* columns = Iran-origin attack waves toward Israel only (Alma definition). Includes both Iranian BM and Iranian drones/UAVs — NOT ballistic-missile-only. Used as proxy for BM activity, not as a BM count."
   },
   "project_structure": {
-    "data/strikes_israel_daily.csv": "PRIMARY consolidated model input. One row per day, clean numeric schema with short flags. Feb 28–Mar 28.",
+    "data/israel_daily_estimate.csv": "PRIMARY consolidated model input. One row per day, clean numeric schema with short flags. Feb 28–Mar 28.",
     "data/inventory.csv": "Iranian BM/launcher stock snapshots by weapon type.",
     "data/conflicts.md": "All unresolved source conflicts and open questions with resolution paths.",
     "data/metadata.json": "Project metadata, methodology notes, update rounds.",
@@ -31,23 +31,19 @@
     "model/": "Python model scripts — NB stochastic model, Z-score monitor, forecasts."
   },
   "consolidated_schema": {
-    "file": "strikes_israel_daily.csv",
+    "file": "israel_daily_estimate.csv",
     "columns": {
       "date": "ISO date",
       "day_num": "Day of war (1=Feb28)",
-      "phase": "I=Days1-4 saturation; II=Days5-7 rapid collapse; III=Day8+ stochastic",
+      "isr_bm": "Best estimate BM at Israel that day",
       "bm_il_min": "Lower bound BM at Israel",
       "bm_il_max": "Upper bound BM at Israel",
-      "bm_il_est": "Best estimate BM at Israel",
-      "bm_il_hits": "Confirmed projectile impacts in Israel (all types per JINSA Chart 4)",
-      "bm_il_cumul": "Cumulative BM at Israel (anchor values only where directly stated)",
-      "alma_waves": "Alma daily attack waves (Iran→Israel; includes BM+UAV)",
-      "intercept_pct": "Interception rate (92% aggregate late March; no daily series)",
-      "cluster_pct": "Cluster warhead percentage (50% through Mar10; majority thereafter)",
-      "data_type": "observed|observed_partial|derived|proxy_est|anchor_only|gap",
-      "confidence": "high|medium|low",
+      "alma_waves": "Alma daily attack waves (Iran→Israel; includes BM+UAV, not BM-only)",
+      "isr_cumul": "Running cumulative BM at Israel (computed from isr_bm; cross-checked against IDF anchors)",
+      "cluster_pct": "Cluster warhead percentage (50%=~half confirmed Mar8-10; >50%=majority confirmed Mar18+; blank=unknown)",
       "primary_source": "Key into sources/registry.csv",
-      "flags": "CONFLICT=unresolved source conflict; DATE_DISPUTE=event date uncertain across sources"
+      "notes": "Estimation method, data basis, and source details for that day",
+      "flags": "CONFLICT=unresolved source conflict"
     }
   },
   "bm_il_cumul_anchors": [
@@ -57,13 +53,12 @@
     {"date": "2026-03-27", "value": ">450",  "source": "TIMES_IL",           "scope": "BM_at_home_front"}
   ],
   "phase_i_conflict": {
-    "description": "Three incompatible readings of Phase I Israel BM counts. See conflicts.md CONFLICT-1 for full analysis.",
-    "reading_A_jinsa_old": "73/57/28/20/9 = 187 total (JINSA Mar5 PDF — earlier Perplexity reading)",
+    "description": "Two remaining incompatible readings of Phase I Israel BM counts. See conflicts.md CONFLICT-1 for full analysis.",
+    "reading_A_jinsa": "73/57/28/20/9 = 187 total (JINSA Mar5 PDF 'Epic Fury: Against Israel' column — confirmed correct column 2026-03-29)",
     "reading_B_bbc_anchor": "~128 cumulative by Mar4 (BBC Arabic citing IDF)",
-    "reading_C_jinsa_new": "200/105/68/37/20 = 430 total (JINSA Mar5 PDF — new Perplexity reading; CONTESTED)",
-    "current_data_treatment": "est = BBC-proportioned (50/39/19/14/6); max = JINSA reading A (73/57/28/20/9). Reading C documented in sources/perplexity/estimates.csv as contested.",
-    "resolution_path": "Read JINSA Mar5 PDF directly: https://jinsa.org/wp-content/uploads/2026/03/Irans-Firepower-2026-03-05-1.pdf",
-    "status": "unresolved — see conflicts.md"
+    "reading_C_eliminated": "200/105/68/37/20 = 430 — ELIMINATED 2026-03-29: Perplexity misread the 'Rising Lion' (2025 war) column as 2026 Israel data",
+    "current_data_treatment": "est = BBC-proportioned (50/39/19/14/6); max = JINSA reading A (73/57/28/20/9). JINSA 187 vs BBC 128 is the remaining open conflict.",
+    "status": "partially_resolved — Reading C eliminated; JINSA 187 vs BBC 128 remains open"
   },
   "data_gaps_current": [
     "Mar 27–28: no Alma waves data",

@@ -65,5 +65,5 @@ All model input data lives in `data/`. Scope: Iranian BM toward Israel only; Gul
 - **Global totals:** 1,556 BM + 3,670+ drones + 28 cruise missiles launched by Mar 24 (JINSA)
 - **Source PDFs:** see `reports/` directory (JINSA 3/5 and 3/24 PDFs parsed directly)
 
-### Phase I Data Conflict (unresolved)
-JINSA Mar5 PDF states 73+57+28+20+9 = **187 BM at Israel** (Days 1–5). BBC/IDF anchor = **~128**. The JINSA Mar5 global totals were revised down 20–37% by Mar24 final counts — Israel-specific likely also overcounted. Both values are documented; `bm_il_cumul=128` retained as primary anchor.
+### Phase I Data Conflict (partially resolved)
+JINSA Mar5 PDF states 73+57+28+20+9 = **187 BM at Israel** (Days 1–5). BBC/IDF anchor = **~128**. The JINSA Mar5 global totals were revised down 20–37% by Mar24 final counts — Israel-specific likely also overcounted. Both values are documented; `isr_cumul=128` retained as primary anchor. Perplexity reading of 200/105/68/37/20 eliminated (2026-03-29) — was 2025 war "Rising Lion" column misread, not 2026 data.
