@@ -1,17 +1,36 @@
 """
 Iranian Ballistic Missile Strike Model — Phase III Poisson Stochastic Model
 
-Two calibrated variants:
+Design principle (decoupled calibration):
+  - PROCESS STRUCTURE (Poisson):  calibrated from Phase IIIb launch data.
+      The Poisson assumption captures the distributed, autonomous nature of
+      Iranian missile-unit operations. Each unit fires independently without
+      central coordination.
+  - DECAY RATE (alpha):  determined from intelligence and public reports on
+      Iranian launcher attrition, NOT fitted to strike data. This decouples
+      the decay estimate from observation noise and makes forecasts stable.
+
+Two variants anchored at Phase IIIb start (t0 = Day 14 = Mar 13):
 
   Model C (Conservative — "Iran sustains"):
-      L_t ~ Poisson(mu_t),  mu_t = 11.75 * exp(-0.007 * (t - 14))
-      Calibrated from M4 piecewise post-break arm (Phase IIIb).
-      Half-life: 99 days.
+      alpha_C = 0.0083/day — directly derived from launcher count intelligence:
+          Day 12: ~160 total operational launchers (Algemeiner/IDF, Mar 11)
+          Day 28: ~140 total operational launchers (ISW/IDF, Mar 27)
+          => alpha = ln(160/140) / 16 = 0.0083/day, half-life 83 days
+      mu0_C = 12.43 — closed-form MLE with alpha_C fixed (Days 14-29 data)
+      L_t ~ Poisson(mu_t),  mu_t = 12.43 * exp(-0.0083 * (t - 14))
 
   Model O (Optimistic — "Iran degrades"):
-      L_t ~ Poisson(mu_t),  mu_t = 14.45 * exp(-0.021 * (t - 11))
-      MLE on full Phase III (Days 11-29).
-      Half-life: 33 days.
+      alpha_O = 0.020/day — 2.5× faster than Model C, representing scenario
+          where Israel specifically prioritizes destruction of Iran's
+          Israel-facing launcher assets (IDF reported >80% of Israel-facing
+          capacity neutralized by Day 12, far more than ~20% of total fleet).
+      mu0_O = 13.52 — closed-form MLE with alpha_O fixed (Days 14-29 data)
+      L_t ~ Poisson(mu_t),  mu_t = 13.52 * exp(-0.020 * (t - 14))
+
+Stability: because alpha is fixed from intelligence (not fitted to data),
+a ±4 BM change in any single observation shifts the April forecast by only
+~6 BMs (C) or ~4 BMs (O) — robust to observation noise.
 
 Usage:
     python poisson_model.py                   # daily Mar29–Apr29 forecast (both models)
@@ -36,17 +55,17 @@ WAR_START = datetime.date(2026, 2, 28)   # Day 1
 MODELS = {
     "C": {
         "label": "Conservative (Iran sustains)",
-        "mu0":   11.75,
-        "alpha": 0.007,
-        "t0":    14,          # Day 14 = Mar 13
-        "note":  "Phase IIIb anchor; α=0.007/d; half-life 101d",
+        "mu0":   12.43,
+        "alpha": 0.0083,
+        "t0":    14,          # Day 14 = Mar 13 (Phase IIIb start)
+        "note":  "Intel-derived: 160→140 launchers Day12→28; α=0.0083/d; HL=83d",
     },
     "O": {
         "label": "Optimistic (Iran degrades)",
-        "mu0":   14.45,
-        "alpha": 0.021,
-        "t0":    11,          # Day 11 = Mar 10
-        "note":  "Full Phase III trend; α=0.021/d; half-life 33d",
+        "mu0":   13.52,
+        "alpha": 0.020,
+        "t0":    14,          # Day 14 = Mar 13 (Phase IIIb start)
+        "note":  "Intel-derived: 2.5× faster (priority targeting); α=0.020/d; HL=35d",
     },
 }
 
