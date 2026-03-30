@@ -160,5 +160,6 @@ Primary sources:
 - **Alma Research and Education Center** — daily Iran-origin attack wave counts toward Israel; used as wave-ratio proxy for Days 12–18 and as independent cross-check for decay rate estimation
 - **ISW** (Institute for the Study of War) — launcher count assessments; basis for Model C's α derivation
 - **BBC Arabic / IDF** — Phase I BBC/IDF anchor (~128 BMs at Israel by Day 5)
+- **Perplexity** — AI-aggregated daily estimates used as secondary cross-check; not used as primary source for Phase I (conflated with 2025 Rising Lion exercise data)
 
 Full data provenance, anchor constraints, and estimation methodology are documented in [docs/methodology.md](docs/methodology.md).
