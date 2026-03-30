@@ -18,7 +18,7 @@ The model uses a **decoupled calibration approach**: the Poisson process structu
 **Key findings:**
 1. Iran's BM campaign has shifted from a **strategic coordinated offensive** to what appears to be a **distributed attrition campaign**, where the statistical pattern is consistent with launcher nodes operating with high autonomy and gradual capacity erosion.
 2. Iranian BM launches toward Israel exhibit **statistical independence** consistent with autonomous launcher operation — the absence of detectable coordination or central scheduling is the simplest explanation, though this structural interpretation is a hypothesis rather than a proven fact.
-3. The capabilities of those autonomous units **decrease slowly over time** at a constant fractional rate of 0.83–2.0% per day. The Observable model (2.0%/day) is derived from the strike data after noise removal; the Conservative model (0.83%/day) is derived independently from published intelligence on total launcher counts. Reality is expected between the two.
+3. The capabilities of those autonomous units **decrease slowly over time** at a constant fractional rate of 0.83–2.0% per day — equivalent to a capacity half-life of **35–83 days**. The Observable model (α=0.020/day, HL=35d) is derived from the strike data after noise removal; the Conservative model (α=0.0083/day, HL=83d) is derived independently from published intelligence on total launcher counts. Reality is expected between the two.
 
 ---
 
@@ -138,11 +138,11 @@ The 92% interception rate (late March, IDF confirmed) means that of ~11.7 BMs/da
 
 ### Forecast range
 
-| Model | Alpha (source) | April total | 90% PI | Daily rate (Apr 29) |
-|-------|---------------|------------|--------|---------------------|
-| **Conservative (C)** | 0.0083/day — intelligence (160→140 launchers) | **~275 BMs** | [248–302] | **~8.4/day** |
-| **Observable (O)** | 0.020/day — denoised strike data | **~206 BMs** | [182–229] | **~5.3/day** |
-| **Midpoint** | *(arithmetic blend — not a probability-weighted forecast)* | **~240 BMs** | — | **~7/day** |
+| Model | Alpha (source) | Half-life | April total | 90% PI | Daily rate (Apr 29) |
+|-------|---------------|-----------|------------|--------|---------------------|
+| **Conservative (C)** | 0.0083/day — intelligence (160→140 launchers) | **83 days** | **~275 BMs** | [248–302] | **~8.4/day** |
+| **Observable (O)** | 0.020/day — denoised strike data | **35 days** | **~206 BMs** | [182–229] | **~5.3/day** |
+| **Midpoint** | *(arithmetic blend — not a probability-weighted forecast)* | ~50 days | **~240 BMs** | — | **~7/day** |
 
 Under either model, Iran retains meaningful BM strike capability throughout April. There is no scenario in the current model where Iran's Attrition phase rate collapses to near-zero during April.
 
