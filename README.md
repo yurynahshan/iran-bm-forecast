@@ -18,7 +18,7 @@ Three structural conclusions follow from the data:
 
 2. **The stockpile is not the binding constraint.** If Iran were drawing from a nearly exhausted missile inventory, firing more today would suppress tomorrow — producing negative autocorrelation. None detected. The binding constraint is operational launcher capacity, not missiles in storage.
 
-3. **Capacity is decaying at 0.83–2.0% per day** — a half-life of **35–83 days**. At this rate Iran retains 39–68% of its current launch capacity by end of April. The campaign will not collapse on its own in the near term, but it is eroding.
+3. **Capacity is decaying at 0.83–2.0% per day** — a half-life of **35–83 days**. Under Model O the half-life is reached by April 17 and the rate falls below 1 BM/day by July 22, with the last effective launcher depleted by late November 2026. Under Model C the half-life isn't reached until June 6 and the campaign remains above 1 BM/day through year-end. The campaign will not collapse on its own in the near term, but it is eroding — and under the faster scenario it has a natural endpoint within 2026.
 
 For the full operational analysis, see [docs/iran_bm_capabilities.md](docs/iran_bm_capabilities.md).
 
