@@ -53,6 +53,8 @@ Reality is expected between them. Full derivations and diagnostics are in [docs/
 
 ## April 2026 Forecast
 
+![Launch Timeline](figures/fig1_launch_timeline.png)
+
 > **Generated March 29, 2026** — one month into the war, before any April data was observed. These are live predictions, not post-hoc analysis.
 
 | Model | Half-life | April total | 90% PI | Daily rate Apr 29 |
@@ -79,6 +81,8 @@ The model discrimination checkpoint is **April 15–18**: by then, 18–21 days 
 
 ## Launcher Attrition Outlook
 
+![Launcher Depletion](figures/fig2_launcher_depletion.png)
+
 Starting from the intelligence-confirmed baseline of ~140 operational launchers (Day 28, Mar 27):
 
 | Threshold | Model C | Model O |
@@ -96,7 +100,7 @@ Under Model O, Iran falls below 50 effective launcher-equivalents by mid-May. Un
 
 ```bash
 # Install dependencies
-pip install numpy scipy
+pip install numpy scipy matplotlib
 
 # Daily forecast table + weekly summary
 python model/poisson_model.py
@@ -110,6 +114,11 @@ python model/model_diagnostics.py
 
 Forecast output is written to `predictions/predictions.csv`.
 
+```bash
+# Generate figures
+python model/plot_figures.py
+```
+
 ---
 
 ## Repository Structure
@@ -118,7 +127,8 @@ Forecast output is written to `predictions/predictions.csv`.
 iran-bm-forecast/
 ├── model/
 │   ├── poisson_model.py       # Main forecast model (Models C and O)
-│   └── model_diagnostics.py   # Model selection, AIC, overdispersion, autocorrelation
+│   ├── model_diagnostics.py   # Model selection, AIC, overdispersion, autocorrelation
+│   └── plot_figures.py        # README figures (timeline, launcher depletion, data)
 ├── docs/
 │   ├── iran_bm_capabilities.md  # Operational analysis and conclusions
 │   └── methodology.md           # Full statistical specification
@@ -127,6 +137,10 @@ iran-bm-forecast/
 │   ├── all_sources_daily.csv          # Raw source columns (JINSA/IDF/Alma/Perplexity)
 │   ├── inventory.csv                  # BM/launcher stock snapshots
 │   └── sources/alma/waves_daily.csv   # Alma attack-wave counts (independent cross-check)
+├── figures/
+│   ├── fig1_launch_timeline.png
+│   ├── fig2_launcher_depletion.png
+│   └── fig3_march_data.png
 └── predictions/
     └── predictions.csv        # Model output: daily forecasts + 90% PIs for April 2026
 ```
@@ -134,6 +148,8 @@ iran-bm-forecast/
 ---
 
 ## Data
+
+![March Data](figures/fig3_march_data.png)
 
 Daily BM estimates at Israel (`data/israel_daily_estimate.csv`) are constructed from multiple open sources using a source hierarchy: JINSA direct counts → JINSA-derived (global minus confirmed non-Israel) → Alma wave-ratio estimates. Each day carries a `data_type` field (observed / observed\_partial / derived / proxy\_est) and a `method` field documenting the specific calculation.
 
