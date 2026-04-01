@@ -19,7 +19,7 @@ date,day_num,alma_waves_daily,alma_waves_cumul,data_quality,source_report_id,not
 2026-03-17,18,11,268,direct,ALMA_MAR18_1800,cumul=268 (257+11=268).
 2026-03-18,19,13,281,direct,ALMA,cumul=281 (268+13=281).
 2026-03-19,20,19,300,direct,ALMA_MAR20_1600,"Spike day. cumul=300 (281+19=300). Geographic: TLV=31.6%; North=31.6%; Jerusalem=26.3%; South=10.5%."
-2026-03-20,21,18,,direct,ALMA_MAR29_BARPLOT,"Daily=18 from bar chart (Mar29 weekend update plot). Previous value 13 was from Statista — undercount confirmed."
+2026-03-20,21,18,318,direct,ALMA_MAR29_BARPLOT,"Daily=18 from bar chart (Mar29 weekend update plot). Previous value 13 was from Statista — undercount confirmed. cumul=300+18=318 ✓ chains to Day22 anchor (318+11=329)."
 2026-03-21,22,11,329,direct,ALMA_MAR29_BARPLOT,"Daily=11 from bar chart. cumul=329 CONFIRMED anchor (Alma Mar22 18:00). Bar value overrides prior Statista-based estimate of 8. ANCHOR CONFLICT: cumuls do not chain cleanly in this period — use stated anchors only."
 2026-03-22,23,8,,direct,ALMA_MAR23_1800,"Daily=8 confirmed (unchanged). Intermediate cumul inconsistent — do not use."
 2026-03-23,24,7,,direct,ALMA_MAR24_1600,"Daily=7 confirmed (unchanged). Intermediate cumul inconsistent — do not use."
@@ -28,3 +28,5 @@ date,day_num,alma_waves_daily,alma_waves_cumul,data_quality,source_report_id,not
 2026-03-26,27,11,377,direct,ALMA_MAR26,"cumul=377 CONFIRMED. Mar26=11 confirmed."
 2026-03-27,28,9,386,direct,ALMA_MAR29_WEEKEND,"Daily=9 from bar chart. cumul=386 (377+9=386)."
 2026-03-28,29,7,393,direct,ALMA_MAR29_WEEKEND,"Daily=7 from bar chart. cumul=393 CONFIRMED anchor from weekend update pie chart ('Total Attack Waves Since War Began: 393'). Check: 9+7=16=393−377 ✓"
+2026-03-29,30,11,404,direct,ALMA_MAR30_X,"Daily=11 confirmed from Alma X post (March 30): 'On March 29, 11 Iranian attack waves against Israel were identified, carried out using ballistic missiles.' cumul=393+11=404."
+2026-03-30,31,9,413,direct,ALMA_MAR31_CHART,"Daily=9 confirmed from Alma Mar31 situational overview chart (donut: 'Total Daily Attack Waves March 30: 9'; Southern Area 55.6%/5 waves, TLV 22.2%/2, North 22.2%/2). cumul=413 CONFIRMED anchor from chart ✓. Check: 404+9=413 ✓"
