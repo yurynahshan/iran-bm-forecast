@@ -37,8 +37,31 @@ PHASE3_START = 11   # Day 11 = Mar 10 (IDF ~300 cumulative anchor; Phase II→II
 
 # ── data ──────────────────────────────────────────────────────────────────────
 
+def _read_estimate_csv(path: Path) -> pd.DataFrame:
+    """Parse israel_daily_estimate.csv robustly (notes col contains unquoted commas)."""
+    rows = []
+    header = None
+    with open(path, encoding="utf-8") as f:
+        for i, raw in enumerate(f):
+            line = raw.rstrip("\n\r")
+            if i == 0:
+                header = line.split(",")
+                continue
+            if not line.strip():
+                continue
+            parts = line.split(",")
+            if len(parts) < 11:
+                parts += [""] * (11 - len(parts))
+            rows.append(parts[:9] + [",".join(parts[9:-1])] + [parts[-1]])
+    df = pd.DataFrame(rows, columns=header)
+    df["date"]    = pd.to_datetime(df["date"])
+    df["day_num"] = pd.to_numeric(df["day_num"])
+    df["isr_bm"]  = pd.to_numeric(df["isr_bm"], errors="coerce")
+    return df
+
+
 def load_phase3():
-    df = pd.read_csv(DATA_FILE, parse_dates=["date"])
+    df = _read_estimate_csv(DATA_FILE)
     df = df.sort_values("day_num").reset_index(drop=True)
     p3 = df[df["day_num"] >= PHASE3_START].dropna(subset=["isr_bm"]).copy()
     p3["t"] = p3["day_num"] - PHASE3_START   # t=0 at Phase IIIa start

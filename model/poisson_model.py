@@ -119,8 +119,35 @@ def zscore_label(z):
 
 # ── Data loading ──────────────────────────────────────────────────────────────
 
+def _read_estimate_csv(path: Path) -> pd.DataFrame:
+    """
+    Parse israel_daily_estimate.csv robustly.
+    The 'notes' column (index 9) contains unquoted commas; cols 0-8 and 10 are safe.
+    Strategy: take cols 0-8 as-is, rejoin cols 9..-2 as notes, last col as flags.
+    """
+    rows = []
+    header = None
+    with open(path, encoding="utf-8") as f:
+        for i, raw in enumerate(f):
+            line = raw.rstrip("\n\r")
+            if i == 0:
+                header = line.split(",")
+                continue
+            if not line.strip():
+                continue
+            parts = line.split(",")
+            if len(parts) < 11:
+                parts += [""] * (11 - len(parts))
+            rows.append(parts[:9] + [",".join(parts[9:-1])] + [parts[-1]])
+    df = pd.DataFrame(rows, columns=header)
+    df["date"]    = pd.to_datetime(df["date"])
+    df["day_num"] = pd.to_numeric(df["day_num"])
+    df["isr_bm"]  = pd.to_numeric(df["isr_bm"], errors="coerce")
+    return df
+
+
 def load_data():
-    df = pd.read_csv(DATA_FILE, parse_dates=["date"])
+    df = _read_estimate_csv(DATA_FILE)
     return df.sort_values("day_num").reset_index(drop=True)
 
 
